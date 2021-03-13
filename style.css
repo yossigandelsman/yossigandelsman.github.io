@@ -35,6 +35,11 @@ max-width: 960px;
 max-width: 500px;
 }
 
+.image-text {
+  color: gray;
+  font-size: 12px;
+}
+
 a {
   color: #00398e;
   text-decoration: none;
@@ -47,7 +52,7 @@ a:hover {
 }
 
 .achievement {
-	color: #ad4100;
+	color: #ea0000;
   font-size: 1rem;
 }
 
