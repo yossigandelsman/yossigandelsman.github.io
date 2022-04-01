@@ -26,14 +26,6 @@
 </head>
 
 <body>
-    <div
-        class="d-flex flex-column flex-md-row fixed-top align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm justify-content-between">
-        <h5 class="my-0 mr-md-auto font-weight-normal"><a class="text-dark" href="#">Yossi Gandelsman</a></h5>
-        <nav class="my-2 my-md-0 mr-md-3">
-            <a class="p-2 text-dark" target="_blank" href="data/CV.pdf">Curriculum Vitae</a>
-            <a class="p-2 text-dark" href="#publications">Publications</a>
-        </nav>
-    </div>
     <div class="intro px-3 py-3 pt-md-5 pb-md-4 mx-auto">
         <h1 class="display-6 text-center">Yossi Gandelsman</h1>
         <div class="d-flex flex-wrap bd-highlight mb-3 my-3 justify-content-center">
@@ -72,6 +64,7 @@
                 </div>
                 <div class="card-body">
                     <ul class="mb-1">
+                        <li><i class="achievement">[01/04/2022] </i>Check out <a href="https://mystyle-personalized-prior.github.io/">our new paper</a> on personalization of StyleGAN.</li>
                         <li><i class="achievement">[13/03/2022] </i>Our <a href="https://deep-saliency-prior.github.io/">paper on deep saliency prior</a> was accepted to CPVR'22.</li>
                         <li><i class="achievement">[14/12/2021] </i>Check out <a href="https://dino-vit-features.github.io/">our new paper</a>
                             on using pre-trained self-supervised ViT features for co-segmentation, parts co-segmentation and point correspondences.</li>
@@ -88,6 +81,26 @@
             <div class="card mb-2 shadow-sm">
                 <div class="card-body p-2 d-flex flex-wrap">
                     <div class="teaser order-1 p-2 bd-highlight">
+                        <a target="_blank" href="https://mystyle-personalized-prior.github.io/">
+                            <img src="images/my_style.png" alt="" width="100%">
+                        </a>
+                    </div>
+                    <div class="p-2 order-2 bd-highlight paper">
+                        <h4 class="my-0 mb-2 font-weight-normal">MyStyle: A Personalized Generative Prior</h4>
+                        <ul class="list-unstyled mb-0">
+                            <li>Yotam Nitzan, Kfir Aberman, Qiurui He, Orly Liba, Michal Yarom, <b>Yossi Gandelsman</b>, Inbar Mosseri, Yael Pritch and Daniel Cohen-Or</li>
+                            <li><i>Preprint</i></li>
+                            <li class="mt-2"><a target="_blank" href="https://arxiv.org/abs/2203.17272">paper</a> | <a
+                                    target="_blank" href="https://mystyle-personalized-prior.github.io/">project page</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-deck mb-3">
+            <div class="card mb-2 shadow-sm">
+                <div class="card-body p-2 d-flex flex-wrap">
+                    <div class="teaser order-1 p-2 bd-highlight">
                         <a target="_blank" href="https://dino-vit-features.github.io/">
                             <img src="images/vit_features.png" alt="" width="100%">
                         </a>
@@ -95,10 +108,8 @@
                     <div class="p-2 order-2 bd-highlight paper">
                         <h4 class="my-0 mb-2 font-weight-normal">Deep ViT Features as Dense Visual Descriptors</h4>
                         <ul class="list-unstyled mb-0">
-                            <li><a target="_blank" href="https://www.linkedin.com/in/shir-amir-859537138">Shir Amir</a>,
-                                 <b>Yossi Gandelsman</b>, <a target="_blank"
-                                    href="https://www.weizmann.ac.il/math/bagon/home">Shai Bagon</a> and 
-                                <a target="_blank" href="https://www.weizmann.ac.il/math/dekel/">Tali Dekel</a>
+                            <li>Shir Amir,
+                                 <b>Yossi Gandelsman</b>, Shai Bagon and Tali Dekel
                             </li>
                             <li><i>Preprint</i></li>
                             <li class="mt-2"><a target="_blank" href="https://arxiv.org/abs/2112.05814">paper</a> | <a
@@ -119,14 +130,8 @@
                     <div class="p-2 order-2 bd-highlight paper">
                         <h4 class="my-0 mb-2 font-weight-normal">Deep Saliency Prior for Reducing Visual Distraction</h4>
                         <ul class="list-unstyled mb-0">
-                            <li><a target="_blank" href="http://kfiraberman.github.io/">Kfir Aberman*</a>,
-                                 <a target="_blank"
-                                    href="https://research.google/people/106417/">Junfeng He*</a>, <b>Yossi Gandelsman</b>, <a target="_blank"
-                                    href="https://research.google/people/InbarMosseri/">Inbar Mosseri</a>,
-                                <a target="_blank" href="http://graphics.stanford.edu/~dejacobs/">David E. Jacobs</a>, <a
-                                    target="_blank" href="https://research.google/people/KaiKohlhoff/">Kai Kohlhoff</a>,
-                                <a target="_blank" href="https://research.google/people/106214/">Yael Pritch</a> and <a
-                                    target="_blank" href="http://people.csail.mit.edu/mrub/">Michael Rubinstein</a>
+                            <li>Kfir Aberman*,
+                                 Junfeng He*, <b>Yossi Gandelsman</b>, Inbar Mosseri, David E. Jacobs, Kai Kohlhoff, Yael Pritch and Michael Rubinstein
                             </li>
                             <li><i>CVPR 2022</i></li>
                             <li class="mt-2"><a target="_blank" href="https://arxiv.org/abs/2109.01980">paper</a> | <a
@@ -148,19 +153,9 @@
                         <h4 class="my-0 mb-2 font-weight-normal">Explaining in Style: Training a GAN to explain a
                             classifier in StyleSpace</h4>
                         <ul class="list-unstyled mb-0">
-                            <li><a target="_blank" href="https://research.google/people/105975/">Oran Lang*</a>,
-                                <b>Yossi Gandelsman*</b>, <a target="_blank"
-                                    href="https://scholar.google.com/citations?user=GMVxiYgAAAAJ&hl=en">Michal
-                                    Yarom*</a>, <a target="_blank"
-                                    href="https://scholar.google.com/citations?user=hh5nOn4AAAAJ&hl=en">Yoav Wald*</a>,
-                                <a target="_blank" href="https://research.google/people/105719/">Gal Elidan</a>, <a
-                                    target="_blank" href="https://research.google/people/105831/">Avinatan Hassidim</a>,
-                                <a target="_blank" href="https://billf.mit.edu/">William T. Freeman</a>, <a
-                                    target="_blank" href="http://web.mit.edu/phillipi/">Phillip Isola</a>, <a
-                                    target="_blank" href="http://www.cs.tau.ac.il/~gamir/">Amir Globerson</a>, <a
-                                    target="_blank" href="http://www.weizmann.ac.il/math/irani/">Michal Irani</a> and <a
-                                    target="_blank"
-                                    href="https://scholar.google.com/citations?user=ifCcZ5IAAAAJ&hl=en">Inbar
+                            <li>Oran Lang*,
+                                <b>Yossi Gandelsman*</b>, Michal
+                                    Yarom*, Yoav Wald*, Gal Elidan, Avinatan Hassidim, William T. Freeman, Phillip Isola, Amir Globerson, Michal Irani and Inbar
                                     Mosseri</a>
                             </li>
                             <li><i>ICCV 2021</i></li>
@@ -186,14 +181,11 @@
                     <div class="p-2 order-2 bd-highlight paper">
                         <h4 class="my-0 mb-2 font-weight-normal">Semantic Pyramid for Image Generation</h4>
                         <ul class="list-unstyled mb-0">
-                            <li><a target="_blank" href="http://www.wisdom.weizmann.ac.il/~/assafsho/">Assaf
-                                    Shocher*</a>, <b>Yossi Gandelsman*</b>, <a target="_blank"
-                                    href="https://scholar.google.com/citations?user=ifCcZ5IAAAAJ&hl=en">Inbar
-                                    Mosseri</a>, <a target="_blank"
-                                    href="https://scholar.google.com/citations?user=GMVxiYgAAAAJ&hl=en">Michal
-                                    Yarom</a>, <a target="_blank" href="http://www.weizmann.ac.il/math/irani/">Michal
-                                    Irani</a>, <a target="_blank" href="https://billf.mit.edu/">William T. Freeman</a>
-                                and <a target="_blank" href="https://www.weizmann.ac.il/math/dekel/">Tali Dekel</a></li>
+                            <li>Assaf
+                                    Shocher*, <b>Yossi Gandelsman*</b>, Inbar
+                                    Mosseri, Michal
+                                    Yarom, Michal
+                                    Irani, William T. Freeman and Tali Dekel</li>
                             <li><i>CVPR 2020 <span class="achievement">[Oral]</span></i></li>
                             <li class="mt-2"><a target="_blank"
                                     href="https://semantic-pyramid.github.io/paper.pdf">paper</a> | <a target="_blank"
@@ -216,9 +208,7 @@
                         <h4 class="my-0 mb-2 font-weight-normal">Double-DIP: Unsupervised Image Decomposition via
                             Coupled Deep-Image-Priors</h4>
                         <ul class="list-unstyled mb-0">
-                            <li><b>Yossi Gandelsman</b>, <a target="_blank"
-                                    href="http://www.wisdom.weizmann.ac.il/~/assafsho/">Assaf Shocher</a> and <a
-                                    target="_blank" href="http://www.weizmann.ac.il/math/irani/">Michal Irani</a></li>
+                            <li><b>Yossi Gandelsman</b>, Assaf Shocher and Michal Irani</li>
                             <li><i>CVPR 2019 <span class="achievement">[Oral]</span></i></li>
                             <li class="mt-2"><a target="_blank"
                                     href="http://www.wisdom.weizmann.ac.il/~vision/DoubleDIP/resources/DoubleDIP.pdf">paper</a>

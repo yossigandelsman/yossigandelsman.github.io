@@ -8,15 +8,18 @@ html {
 }
 @media (max-width: 768px) {
   body {
-    padding-top: 6rem;
+    padding-top: 2rem;
     background-color: #f8f8f8;
   }
 }
 @media (min-width: 768px) {
   body {
-    padding-top: 4rem;
+    padding-top: 2.5rem;
     background-color: #f8f8f8;
   }
+}
+h1 {
+  margin-bottom: 0.7rem;
 }
 
 .container {
