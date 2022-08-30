@@ -1,0 +1,592 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Visual Prompting via Image Inpainting</title>
+    <link href="./assets/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 name="top" align="center">Visual Prompting via Image Inpainting</h1>
+        <h2 align="center">Supplementary Material</h2>
+        <p align="center">&nbsp;</p>
+        <ul  style="list-style-type:none;">
+            <li><a href='#segmentation'><b>8. Comaprison of the segmentation results for different models</b></a></li>
+            <li><a href='assets/segmentation_results.html'><b>9. Segmentation results (all results for split 0 of pascal 5i)</b></a></li>
+            <li><a href='#colorization'><b>10. Colorization results</b></a></li>
+            <li><a href='#detection'><b>11. Detection results</b></a></li>
+            <li><a href='#other'><b>12. Other results</b></a></li>
+            <li><a href='#support'><b>13. Support examples effect</b></a></li>
+            <li><a href='#failure'><b>14. Failure cases</b></a></li>
+            <li><a href='#synthetic'><b>15. Synthetic data results</b></a></li>
+            <li><a href='#dataset'><b>16. Examples from dataset</b></a></li>
+        </ul>
+        <hr>
+        <a name="segmentation"></a>
+        <h1>8. Comaprison of the segmentation results for different models</h1>
+        <p>We provide here the segmentation results for the 4 models we used in the paper: BEIT [1], VQGAN [15], MAE[20] and our MAE+VQGAN. <br>The in-painted area is the bottom-right square in each grid-image.</p>
+        <table align="center">
+            <tr>
+                <th class="seg" align="center">BEIT</th>
+                <th class="seg" align="center">VQGAN</th>
+                <th class="seg" align="center">MAE</th>
+                <th class="seg" align="center">MAE+VQGAN</th>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/0_283_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_283_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_283_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_283_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/0_31_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_31_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_31_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_31_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/0_536_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_536_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_536_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_536_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/0_711_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_711_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_711_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_711_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/0_772_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_772_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_772_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_772_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/0_861_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_861_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_861_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_861_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/0_909_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_909_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_909_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/0_909_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/1_247_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_247_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_247_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_247_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/1_415_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_415_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_415_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_415_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/1_47_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_47_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_47_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_47_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/1_606_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_606_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_606_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/1_606_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/2_452_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_452_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_452_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_452_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/2_524_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_524_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_524_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_524_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/2_556_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_556_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_556_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_556_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/2_590_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_590_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_590_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_590_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/2_686_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_686_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_686_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_686_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/2_700_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_700_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_700_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_700_MAEVQGAN.png'></td>
+            </tr>
+            <tr>
+                <td class="seg"><img src='assets/segmentation/2_886_BEIT.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_886_TAMING.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_886_MAE.png'></td>
+                <td class="seg"><img src='assets/segmentation/2_886_MAEVQGAN.png'></td>
+            </tr>
+        </table>
+        <hr>
+        <h1><a href='assets/segmentation_results.html'>9. Segmentation results (all results for split 0 of pascal 5i)</a></h1>
+        <p>We provide here the segmentation results for our MAE+VQGAN model on the full split 0 of pascal 5i [44].<br>
+            The in-painted area is the bottom-right square in each grid-image.</p>
+        <hr>
+        <a name='colorization'></a>
+        <h1>10. Colorization results</h1>
+        <p>We provide here colorization results for our MAE+VQGAN model.</p>
+        <table align="center">
+            <tr>
+                <td><img src='assets/colorization/1177.png'></td>
+                <td><img src='assets/colorization/7109.png'></td>
+                <td><img src='assets/colorization/17357.png'></td>
+                <td><img src='assets/colorization/25511.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/colorization/3231.png'></td>
+                <td><img src='assets/colorization/33223.png'></td>
+                <td><img src='assets/colorization/40602.png'></td>
+                <td><img src='assets/colorization/42556.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/colorization/44724.png'></td>
+                <td><img src='assets/colorization/45706.png'></td>
+                <td><img src='assets/colorization/4994.png'></td>
+                <td><img src='assets/colorization/14193.png'></td>
+            </tr>
+        </table>
+        <hr>
+        <a name="detection"></a>
+        <h1>11. Detection results</h1>
+        <p>We provide here the detection results for our MAE+VQGAN model, after the post-processing that was described in the paper on the in-painted bottom-right square in each grid-image.</p>
+        <table align="center">
+            <tr>
+                <td><img src='assets/detection/364.png'></td>
+                <td><img src='assets/detection/534.png'></td>
+                <td><img src='assets/detection/51.png'></td>
+                <td><img src='assets/detection/5.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/detection/456.png'></td>
+                <td><img src='assets/detection/302.png'></td>
+                <td><img src='assets/detection/generated_rounded_154_fixed.png'></td>
+                <td><img src='assets/detection/12.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/detection/10.png'></td>
+                <td><img src='assets/detection/generated_rounded_157_fixed.png'></td>
+                <td><img src='assets/detection/generated_rounded_27_fixed.png'></td>
+                <td><img src='assets/detection/165.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/detection/generated_rounded_429_fixed.png'></td>
+                <td><img src='assets/detection/generated_rounded_272_fixed.png'></td>
+                <td><img src='assets/detection/25.png'></td>
+                <td><img src='assets/detection/41.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/detection/142.png'></td>
+                <td><img src='assets/detection/generated_rounded_447_fixed.png'></td>
+                <td><img src='assets/detection/generated_rounded_180_fixed.png'></td>
+                <td><img src='assets/detection/generated_rounded_512_fixed.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/detection/342.png'></td>
+                <td><img src='assets/detection/346.png'></td>
+                <td><img src='assets/detection/generated_rounded_352_fixed.png'></td>
+                <td><img src='assets/detection/generated_rounded_533_fixed.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/detection/generated_rounded_409_fixed.png'></td>
+                <td><img src='assets/detection/generated_rounded_308_fixed.png'></td>
+                <td><img src='assets/detection/438.png'></td>
+                <td><img src='assets/detection/generated_rounded_381_fixed.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/detection/27.png'></td>
+                <td><img src='assets/detection/generated_rounded_521_fixed.png'></td>
+                <td><img src='assets/detection/54.png'></td>
+                <td><img src='assets/detection/138.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/detection/generated_rounded_502_fixed.png'></td>
+                <td><img src='assets/detection/generated_rounded_450_fixed.png'></td>
+                <td><img src='assets/detection/75.png'></td>
+                <td><img src='assets/detection/366.png'></td>
+            </tr>
+        </table>
+        <hr>
+        <a name="other"></a>
+        <h1>12. Other results</h1>
+        <p>We provide here more results of our MAE+VQGAN model. As discussed in the paper, the task is defined solely by the given support examples. <br>The in-painted area is the bottom-right square in each grid-image.</p>
+        <p><b>Please hover over the images to see the inpainting result.</b></p>
+        <table align="center">
+            <tr>
+                <td>
+                    <div class="hover_container"><img src="assets/other/kan.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                 <td>
+                    <div class="hover_container"><img src="assets/other/35.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/59.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                
+                <td>
+                    <div class="hover_container"><img src="assets/other/snow2_result.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="hover_container"><img src="assets/other/generated_363.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/16.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/tree.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/text4.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="hover_container"><img src="assets/other/67.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/82.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/22.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/text3.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="hover_container"><img src="assets/other/generated_126.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/style1_result.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/text2.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/snow_result.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="hover_container"><img src="assets/other/dec_4.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/40.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/71_1.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+               <td>
+                    <div class="hover_container"><img src="assets/other/75.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <a name="failure"></a>
+        <h1>13. Failure cases</h1>
+        <p>We provide here failure cases of our MAE+VQGAN model. <br>The in-painted area is the bottom-right square in each grid-image.</p>
+        <p><b>Please hover over the images to see the inpainting result.</b></p>
+        <table align="center">
+            <tr>
+                <td>
+                    <div class="hover_container"><img src="assets/other/numbers.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/number2.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/sketch_result3.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                 <td>
+                    <div class="hover_container"><img src="assets/other/dec_13.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="hover_container"><img src="assets/other/91.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/fingers.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/parts.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="hover_container"><img src="assets/other/44.png">
+                        <div class="overlay">
+                            <div class="text">Hover to reveal</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <a name="support"></a>
+        <h1>14. Support Examples Effect</h1>
+        <p>Each row includes the same query image, with different support examples.</p>
+        <table align="center">
+            <tr>
+                <td><img src='assets/support/generated_100.png'></td>
+                <td><img src='assets/support/generated_101.png'></td>
+                <td><img src='assets/support/generated_102.png'></td>
+                <td><img src='assets/support/generated_103.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/support/generated_0.png'></td>
+                <td><img src='assets/support/generated_1.png'></td>
+                <td><img src='assets/support/generated_2.png'></td>
+                <td><img src='assets/support/generated_3.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/support/generated_64.png'></td>
+                <td><img src='assets/support/generated_65.png'></td>
+                <td><img src='assets/support/generated_66.png'></td>
+                <td><img src='assets/support/generated_67.png'></td>
+            </tr>
+            <tr>
+                <td><img src='assets/support/generated_32.png'></td>
+                <td><img src='assets/support/generated_33.png'></td>
+                <td><img src='assets/support/generated_34.png'></td>
+                <td><img src='assets/support/generated_35.png'></td>
+            </tr>
+        </table>
+        <hr>
+        <a name="synthetic"></a>
+        <h1>15. Synthetic Data</h1>
+        <p>We provide here the results of our MAE+VQGAN model on the 6 synthetic tasks we created. <br>The in-painted area is the bottom-right square in each grid-image.</p>
+        <h2>Color</h2>
+        <table align="center">
+            <tr>
+                <td><img src='assets/synth/color/generated_23.png'></td>
+                <td><img src='assets/synth/color/generated_85.png'></td>
+                <td><img src='assets/synth/color/generated_90.png'></td>
+                <td><img src='assets/synth/color/generated_92.png'></td>
+            </tr>
+        </table>
+        <h2>Size</h2>
+        <table align="center">
+            <tr>
+                <td><img src='assets/synth/size/generated_0.png'></td>
+                <td><img src='assets/synth/size/generated_19.png'></td>
+                <td><img src='assets/synth/size/generated_46.png'></td>
+                <td><img src='assets/synth/size/generated_61.png'></td>
+            </tr>
+        </table>
+        <h2>Shape</h2>
+        <table align="center">
+            <tr>
+                <td><img src='assets/synth/shape/generated_18.png'></td>
+                <td><img src='assets/synth/shape/generated_46.png'></td>
+                <td><img src='assets/synth/shape/generated_88.png'></td>
+                <td><img src='assets/synth/shape/generated_95.png'></td>
+            </tr>
+        </table>
+        <h2>Size & Shape</h2>
+        <table align="center">
+            <tr>
+                <td><img src='assets/synth/size_shape/generated_77.png'></td>
+                <td><img src='assets/synth/size_shape/generated_79.png'></td>
+                <td><img src='assets/synth/size_shape/generated_95.png'></td>
+                <td><img src='assets/synth/size_shape/generated_97.png'></td>
+            </tr>
+        </table>
+        <h2>Shape & Color</h2>
+        <table align="center">
+            <tr>
+                <td><img src='assets/synth/shape_color/generated_1.png'></td>
+                <td><img src='assets/synth/shape_color/generated_2.png'></td>
+                <td><img src='assets/synth/shape_color/generated_80.png'></td>
+                <td><img src='assets/synth/shape_color/generated_90.png'></td>
+            </tr>
+        </table>
+        <h2>Size & Color</h2>
+        <table align="center">
+            <tr>
+                <td><img src='assets/synth/size_color/generated_1.png'></td>
+                <td><img src='assets/synth/size_color/generated_39.png'></td>
+                <td><img src='assets/synth/size_color/generated_49.png'></td>
+                <td><img src='assets/synth/size_color/generated_96.png'></td>
+            </tr>
+        </table>
+        <hr>
+        <a name="dataset"></a>
+        <h1>16. Examples from dataset</h1>
+        <p>Please click on the images to see in full size.</p>
+        <h2>Multiple Images</h2>
+        <table align="center" class="dataset">
+            <tr>
+                <th>Bounding box</th>
+                <th>Saliency</th>
+                <th>No annotations</th>
+            </tr>
+            <tr>
+                <td><a href="assets/dataset/fig_imCrop_VOC_horse2.pdf_1411.6382_0.png"><img width=250 src='assets/dataset/fig_imCrop_VOC_horse2.pdf_1411.6382_0.png'></a></td>
+                <td><a href="assets/dataset/visual.pdf_2108.05312_0.png'"><img width=250 src='assets/dataset/visual.pdf_2108.05312_0.png'></a></td>
+                <td><a href="assets/dataset/figures_ffhq-supp.pdf_2110.13107_0.png"><img width=250 src='assets/dataset/figures_ffhq-supp.pdf_2110.13107_0.png'></a></td>
+            </tr>
+            <tr>
+                <th>Mask</th>
+                <th>Pose</th>
+                <th>Uncategorized</th>
+            </tr>
+            <tr>
+                <td><a href="assets/dataset/figure_attn_vis_old.pdf_2101.03929_0.png"><img width=250 src='assets/dataset/figure_attn_vis_old.pdf_2101.03929_0.png'></a></td>
+                <td><a href="assets/dataset/examples_sk.pdf_1609.03659_0.png"><img width=250 src='assets/dataset/examples_sk.pdf_1609.03659_0.png'></a></td>
+                <td><a href="assets/dataset/figure_paper_cenc.pdf_2109.11572_0.png"><img width=250 src='assets/dataset/figure_paper_cenc.pdf_2109.11572_0.png'></a></td>
+            </tr>
+        </table>
+        <h2>Single Images</h2>
+        <table align="center" class="dataset">
+            <tr>
+                <th>Bounding box</th>
+                <th>Architecture</th>
+                <th>No annotations</th>
+                <th>Uncategorized</th>
+            </tr>
+            <tr>
+                <td><a href="assets/dataset/figures_intro_dog-1_00150.pdf_2003.12565_0.png"><img width=250 src='assets/dataset/figures_intro_dog-1_00150.pdf_2003.12565_0.png'></a></td>
+                <td><a href="assets/dataset/figure_model.png"><img width=250 src='assets/dataset/figure_model.png'></a></td>
+                <td><a href="assets/dataset/the8.png"><img width=250 src='assets/dataset/the8.png'></a></td>
+                <td><a href="assets/dataset/Figures_closeup_cactus.pdf_1911.03472_0.png"><img width=250 src='assets/dataset/Figures_closeup_cactus.pdf_1911.03472_0.png'></a></td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

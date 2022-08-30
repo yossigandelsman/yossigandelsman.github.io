@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Visual Prompting via Image Inpainting</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script src="jquery.jslatex.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6">
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      body {
+        font-family:Arial;
+        font-size:20px;
+        margin:60px auto;
+        width:auto;
+        max-width:900px;
+      }
+
+      hr {
+        border:0;
+        height:1.0px;
+        background-image:linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+      }
+
+      .gap-30 {
+      width:100%;
+      height:30px;
+      }
+
+      .gap-20 {
+      width:100%;
+      height:20px;
+      }
+
+      .gap-10 {
+      width:100%;
+      height:10px;
+      }
+
+      .gap-5 {
+      width:100%;
+      height:5px;
+      }
+    </style>
+  </head>
+
+  <div class="container">
+  <body>
+
+    <center><span style="font-size:40px">
+      Visual Prompting via Image Inpainting
+    </span></center>
+    <div class="gap-20"></div>
+
+    <!---------------------  authors --------------------->
+    <center>
+    <span style="font-size:20px">
+          &nbsp;
+          <div style="display:inline-block">
+          <a href="https://www.amirbar.net/">Amir Bar*</a>
+          <sup style="font-size:15px">12</sup>,
+          </div>
+          &nbsp;
+          <div style="display:inline-block">
+          <a href="https://yossi.gandelsman.com/">Yossi Gandelsman*</a>
+          <sup style="font-size:15px">1</sup>,
+          </div>
+          &nbsp;
+          <div style="display:inline-block">
+          <a href="https://people.eecs.berkeley.edu/~trevor/">Trevor Darrell</a>
+          <sup style="font-size:15px">1</sup>,
+          </div>
+          &nbsp;
+          <div style="display:inline-block">
+          <a href="https://cs3801.wixsite.com/amirgloberson">Amir Globerson</a>
+          <sup style="font-size:15px">2</sup>,
+          </div>
+          &nbsp;
+          <div style="display:inline-block">
+          <a href="https://people.eecs.berkeley.edu/~efros/">Alexei A. Efros</a>
+          <sup style="font-size:15px">1</sup>
+          </div>
+    </span>
+    </center>
+    <!--------------------- affiliations --------------------->
+    <div class="gap-5"></div>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        <center><span style="font-size:20px">
+          UC Berkeley<sup style="font-size:15px">1</sup>
+        </span></center>
+      </div>
+      <div class="col-md-3">
+        <center><span style="font-size:20px">
+          Tel Aviv University<sup style="font-size:15px">2</sup>
+        </span></center>
+      </div>
+    </div>
+    <p>* equal contribution</p>
+    <hr>
+
+    <!--------------------- links --------------------->
+    <div class="gap-10"></div>
+
+    <center>
+    <!-- <span style="font-size:20px"><b>NeurIPS 2022</b> -->
+      &nbsp; 
+      [<a href="">paper</a>]
+      &nbsp;
+      [<a href="bibtex.txt">BibTeX</a>]
+      &nbsp; 
+      [<a href="">dataset & code</a> - coming soon]
+    </span>
+    <div class="gap-20"></div>
+  </center>
+    <img width="100%" src="images/teaser.png">
+    <p></p>
+    <p><i><b>Visual prompting via Image Inpainting</b>. <i>Top</i>: Prompting Image Inpainting Models. Given input-output example(s) \((x_1, y_1)\) and image query \(x_q\), we construct a grid-like single image called a <i>visual prompt</i> \(x_{vp}\). The visual prompt is composed of the desired task example(s) and a new query image (all in green). The inpainting model goal is then to predict the masked region (red) such that it is consistent with the example(s).
+  <i>Bottom</i>: an inpainting model can solve this way various computer vision tasks, given that it was trained on the right data. The model predictions are annotated in red.</i></p>
+    <!--------------------- abstract --------------------->
+    <hr>
+    <div class="gap-20"></div>
+    <b><span style="font-size:25px">Abstract</span></b><br>
+    <div class="gap-10"></div>
+    <p> 
+    How does one adapt a pre-trained visual model to novel downstream tasks <i>without task-specific finetuning or any model modification</i>? Inspired by prompting in NLP, this paper investigates visual prompting: given input-output image example(s) of a new task at test time and a new input image, the goal is to automatically produce the correct output image, consistent with the example(s) task. We show that posing this problem as a simple image inpainting task - literally just filling in a hole in a concatenated visual prompt image - turns out to be surprisingly effective, given that the inpainting algorithm has been trained on the right data. We train masked auto-encoding models on a new dataset that we curated - 88k unlabeled figures from academic papers sources on Arxiv. We apply visual prompting to these pretrained models and demonstrate results on various downstream tasks, including foreground segmentation, single object detection, colorization, edge detection, etc. 
+    </p>
+
+    <hr>
+    <div class="gap-20"></div>
+    <b><span style="font-size:25px">Paper</span></b><br>
+    <p>
+    <table border="0">
+    <tbody>
+      <tr>
+        <td><a href='index.html'><img src="images/paper.png" style="border:1px solid #000000;" alt="" width="200"></a></td>
+        <td>&nbsp;</td>
+        <td><p><br><a href='index.html'>"Visual prompting via Image Inpainting"</a>,<br> Amir Bar*, Yossi Gandelsman*, Trevor Darrell, Amir Globerson and Alexei A. Efros.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+    <div class="gap-10"></div>
+    <p>
+      
+    </p>
+    <hr>
+    <div class="gap-20"></div>
+    <b><span style="font-size:25px">Supplementary Material</span></b><br>
+    <table border="0">
+    <tbody>
+      <tr>
+        <td><a href='sup/index.html'><img style="border:1px solid #000000;" src="images/sup.png" alt="" width="200" height="128"></a></td>
+        <td>&nbsp;</td>
+        <td><p><br><a href='sup/index.html'>[Link]</a></p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+    <!-- <div class="gap-10"></div> -->
+    <!-- <p> -->
+      <!-- 
+    </p>
+    <hr>
+    <div class="gap-20"></div>
+    <b><span style="font-size:25px">Dataset</span></b><br>
+    <div class="gap-10"></div>
+    <p> -->
+      
+    <!-- </p> -->
+  </body>
+  </div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+
+</html>
