@@ -153,6 +153,13 @@ trained on the Figures dataset. For each visual prompt, the result is marked in 
     <center><p><i>Random samples from our Computer Vision Figures dataset.</i></p></center>
     <hr>
     <div class="gap-20"></div>
+    <b><span style="font-size:25px">Inpainting using MAE-VQGAN</span></b><br>
+    <p></p>
+    <p>During training, an input image is patchified, masked and fed into a masked auto-encoder. 
+      For each masked token, the decoder outputs a distribution over a pretrained <a href="https://compvis.github.io/taming-transformers/">VQGAN</a> codebook. The model is trained using cross entropy loss on random crops from our datasets.</p>
+    <center><img width="60%" src="images/model.png"></center>
+    <hr>
+    <div class="gap-20"></div>
     <b><span style="font-size:25px">Paper</span></b><br>
     <p>
     <table border="0">
