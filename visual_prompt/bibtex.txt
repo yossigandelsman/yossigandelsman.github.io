@@ -2,4 +2,5 @@
         title={Visual Prompting via Image Inpainting},
         author={Bar, Amir and Gandelsman, Yossi and Darrell, Trevor and Globerson, Amir and Efros, Alexei A.},
         year={2022},
+        journal={arXiv preprint arXiv:2209.00647}
 }
