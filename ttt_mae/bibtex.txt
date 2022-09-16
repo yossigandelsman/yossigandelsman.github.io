@@ -1,0 +1,6 @@
+@article{maettt, 
+        title={Test-Time Training with Masked Autoencoders},
+        author={Gandelsman, Yossi and Sun, Yu and Chen, Xinlei and Efros, Alexei A.},
+        year={2022},
+        journal={arXiv preprint arXiv:2209.07522}
+}
