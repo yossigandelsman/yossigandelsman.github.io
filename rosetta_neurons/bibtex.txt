@@ -1,6 +1,6 @@
-@article{rosettan, 
-        title={Rosetta Neurons: Mining the Common Units in a Model Zoo},
-        author={Dravid, Amil and Gandelsman, Yossi and Shocher, Assaf and Efros, Alexei A.},
-        year={2023},
-        journal={arXiv preprint arXiv:2209.07522}
+@article{rosettaneurons,
+    author    = {Dravid, Amil and Gandelsman, Yossi and Efros, Alexei A. and Shocher, Assaf},
+    title     = {Rosetta Neurons: Mining the Common Units in a Model Zoo},
+    journal   = {arXiv preprint arXiv:2306.09346},
+    year      = {2023}
 }
