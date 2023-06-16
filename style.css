@@ -6,16 +6,17 @@ html {
     font-size: 16px;
   }
 }
+h4 {
+  font-size: 1.4rem;
+}
 @media (max-width: 768px) {
   body {
     padding-top: 2rem;
-    background-color: #f8f8f8;
   }
 }
 @media (min-width: 768px) {
   body {
     padding-top: 2.5rem;
-    background-color: #f8f8f8;
   }
 }
 h1 {
