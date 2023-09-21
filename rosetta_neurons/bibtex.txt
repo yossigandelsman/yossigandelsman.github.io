@@ -1,6 +1,6 @@
-@article{rosettaneurons,
-    author    = {Dravid, Amil and Gandelsman, Yossi and Efros, Alexei A. and Shocher, Assaf},
-    title     = {Rosetta Neurons: Mining the Common Units in a Model Zoo},
-    journal   = {arXiv preprint arXiv:2306.09346},
-    year      = {2023}
+@inproceedings{dravid2023rosetta,
+    author = {Dravid, Amil and Gandelsman, Yossi and Efros, Alexei A. and Shocher, Assaf},
+    title = {Rosetta Neurons: Mining the Common Units in a Model Zoo},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    year = {2023}
 }
