@@ -191,7 +191,7 @@
     <hr>
     <b><span style="font-size:25px">Decomposition into image tokens</span></b>
     <div class="gap-10"></div>
-    <p>We can alternately decompose the representation across image tokens to obtain a heatmap of the image regions that contribute towards a given text direction. This allows us to uncover an emergent spatial localization within CLIP:</p>
+    <p>We can alternately decompose the representation across image tokens that correspond to locations in the image: $c_{token}^i=\sum_{l=1}^L{\sum_{h=1}^H{{{c_{i,l,h}}}}}$. Computing the inner product between each $c_{token}^i$ and a text representation allows us to obtain a heatmap of the image regions that contribute towards the given text. This decomposition uncovers an emergent spatial localization within CLIP:</p>
     </p><center><img width="100%" src="images/token_decomposition2.png"></center>
     <p><i><b>Heatmaps produced by the image token decomposition.</b> We visualize (a) what areas in the image directly contribute to the similarity score between the image representation and a text representation and (b) what areas make an image representation more similar to one text representation rather than another.</i></p>
     <div class="gap-10"></div>
