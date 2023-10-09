@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" class="fontawesome-i2svg-active fontawesome-i2svg-complete">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript"
+  src="https://www.maths.nottingham.ac.uk/plp/pmadw/LaTeXMathML.js">
+  </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Interpreting CLIP's Image Representation via Text-Based Decomposition</title>
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6">
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+      <script defer="" src="css/fontawesome.all.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      body {
+        font-size:20px;
+        margin:60px auto;
+        width:auto;
+        max-width:900px;
+      }
+
+      hr {
+        border:0;
+        height:1.0px;
+        background-image:linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+      }
+
+      .gap-30 {
+      width:100%;
+      height:30px;
+      }
+
+      .gap-20 {
+      width:100%;
+      height:20px;
+      }
+
+      .gap-10 {
+      width:100%;
+      height:10px;
+      }
+
+      .gap-5 {
+      width:100%;
+      height:5px;
+      }
+      .paper {
+        max-width: 700px;
+      }
+      @media (max-width: 910px) {
+        .paper {
+          max-width: 500px;
+        }
+      }
+      @media (max-width: 610px) {
+        .paper {
+          max-width: 300px;
+        }
+      }
+    </style>
+  </head>
+
+  <div class="container">
+  <body>
+
+    <center><span style="font-size:40px">
+      Interpreting CLIP's Image Representation<br>via Text-Based Decomposition
+    </span></center>
+    <div class="gap-20"></div>
+
+    <!---------------------  authors --------------------->
+    <span style="font-size:20px">
+    <div class="row">
+      <div class="col-md-4">
+        <center><a href="https://yossi.gandelsman.com"><span style="font-size:21px">Yossi Gandelsman</span></a>
+      </div>
+      <div class="col-md-4">
+        <center><a href="https://people.eecs.berkeley.edu/~efros/"><span style="font-size:21px">Alexei A. Efros</span></a>
+      </div>
+      <div class="col-md-4">
+        <center><a href="https://jsteinhardt.stat.berkeley.edu/"><span style="font-size:21px">Jacob Steinhardt</span></a>
+      </div>
+    </div>
+  </span>
+    <!-- <center>
+    <span style="font-size:20px">
+          &nbsp;
+          <div style="display:inline-block">
+          <a href="https://avdravid.github.io">Amil Dravid*</a>
+          <sup style="font-size:15px">1</sup>,
+          </div>
+          &nbsp;
+          <div style="display:inline-block">
+          <a href="https://yossi.gandelsman.com">Yossi Gandelsman*</a>
+          <sup style="font-size:15px">2</sup>,
+          </div>
+          &nbsp;
+          <div style="display:inline-block">
+          <a href="https://assafshocher.github.io">Assaf Shocher</a>
+          <sup style="font-size:15px">23</sup>,
+          </div>
+          &nbsp;
+          <div style="display:inline-block">
+          <a href="https://people.eecs.berkeley.edu/~efros/">Alexei A. Efros</a>
+          <sup style="font-size:15px">2</sup>
+          </div>
+    </span>
+	</center> -->
+    <!--------------------- affiliations --------------------->
+    <div class="gap-5"></div>
+    
+    <div class="row">
+      <div class="col-md-4">
+        <center><span style="font-size:18px">
+        </span></center>
+      </div>
+      <div class="col-md-4">
+        <center><span style="font-size:18px">UC Berkeley
+        </span></center>
+      </div>
+      <div class="col-md-4">
+        <center><span style="font-size:18px">
+        </span></center>
+      </div>
+      
+    </div>
+    <div class="gap-10"></div>
+    <hr>
+
+    <!--------------------- links --------------------->
+    <div class="gap-10"></div>
+
+    <center>
+    <span style="font-size:23px"> 
+      [<a href="" class="external-link button is-normal is-rounded is-dark">paper</a>]
+      &nbsp;
+      [<a href="">bibtex</a>]
+      &nbsp; 
+      [<a href="">code</a>]
+    </span>
+    <div class="gap-20"></div>
+
+    </center>
+<img width="100%" src="images/teaser3.png">
+<p></p>
+<p><i><b>CLIP-ViT image representation decomposition.</b> By decomposing CLIP's image representation as a sum across individual image patches, model layers, and attention heads, we can (a) characterize each head’s role by automatically finding text-interpretable directions that span its output space, (b) highlight the image regions that contribute to the similarity score between image and text, and (c) present what regions contribute towards a found text direction at a specific head.
+  </i></p>
+<hr>
+    <!--------------------- abstract --------------------->
+    <div class="gap-20"></div>
+    <center><b><span style="font-size:25px">Abstract</span></b><br></center>
+    <div class="gap-10"></div>
+    <p> 
+   We investigate the CLIP image encoder by analyzing how individual model components affect the final representation. 
+    We decompose the image representation as a sum across individual image patches, model layers, and attention heads, and use CLIP's text representation to interpret the summands. Interpreting the attention heads, we characterize each head's role by automatically finding text representations that span its output space, which reveals property-specific roles for many heads (e.g.~location or shape). Next, interpreting the image patches, we uncover an emergent spatial localization within CLIP. Finally, we use this understanding to remove spurious features from CLIP and to create a strong zero-shot image segmenter. Our results indicate that a scalable understanding of transformer models is attainable and can be used to repair and improve models.
+    </p>
+    <hr>
+    <!--------------------- content --------------------->
+    <!-- <div class="gap-20"></div> -->
+    <b><span style="font-size:25px">Decomposition into layers</span></b>
+    <div class="gap-10"></div>
+    <p>We show that the CLIP-ViT image representation can be decomposed into direct contributions of individual layers of the image encoder ViT architecture. We <a href="https://www.neelnanda.io/mechanistic-interpretability/glossary">mean-ablate</a> these contributions and find that the last few attention layers have most of the direct effects on this representation.</p>
+    <p>The contributions from these last $L$ attention layers can be decomposed further as a sum across $N$ individual image patches and $H$ attention heads:</p>
+    <center>
+    <blockquote>$CLIP(I) = \sum_{l=1}^L{\sum_{h=1}^H{\sum_{i=1}^{N}{{c_{i,l,h}}}}}$</blockquote>
+  </center>
+    <p>Each summand $c_{i,l,h}$ lives in a joint vision-language space, so by computing the inner product between the summand and a CLIP text representation we can get its contribution towards a given text representation.</p>
+    <hr>
+    <b><span style="font-size:25px">Decomposition into attention heads</span></b>
+    <div class="gap-10"></div>
+    <p>The image represntation can be decomposed into contributions of individual attention heads $c_{head}^{(l,h)} = \sum_{i=1}^{N}{{c_{i,l,h}}$. We present <i>TextSpan</i>, an algorithm for labeling the latent directions of each component $c_{head}^{(l,h)}$ with text descriptions. Our labeling reveals that some heads exhibit specific semantic roles:</p>
+    <img width="100%" src="images/heads.png">
+    <div class="gap-10"></div>
+    <b><span style="font-size:22px">Emergent similarity metrics in CLIP</span></b>
+    <div class="gap-10"></div>
+    <p>Since some heads specialize to image properties, we can use their intermediate representations to obtain a property-specific similarity metric. We use these metrics for retrieving the most similar images to a given input, according to these heads:</p>
+      <img width="100%" src="images/nn6.png">
+      <p><i><b>Top-8 nearest neighbors per head and image.</b> We retrieve the most similar images to an input image by computing the similarity of the direct contributions of individual heads. As some heads capture specific aspects of the image (e.g. colors/objects), retrieval according to this metric results in images that are most similar regarding these aspects</i></p>
+    <div class="gap-10"></div>
+    <b><span style="font-size:22px">Reducing known spurious cues</span></b>
+    <div class="gap-10"></div>
+    We can use our knowledge of head-specific roles to manually remove spurious correlations. For instance, if location is being used as a spurious feature, we can ablate heads that specialize in geolocation to reduce reliance on the incorrect feature.
+    <p>We validate this idea on the Waterbirds dataset (Sagawa et al., 2019), and show a significant increase in worst-group accuracy:</p><center><img width="35%" src="images/spurious_cues.png"></center>
+    <p><i><b>Worst-group accuracy on Waterbirds.</b> We reduce spurious cues by ablating property-specific heads (geo-location and location). As a baseline, we ablated 10 random heads and reported the top accuracy out of 5 trials.</i></p> 
+    <div class="gap-10"></div>
+    <hr>
+    <b><span style="font-size:25px">Decomposition into image tokens</span></b>
+    <div class="gap-10"></div>
+    <p>We can alternately decompose the representation across image tokens to obtain a heatmap of the image regions that contribute towards a given text direction. This allows us to uncover an emergent spatial localization within CLIP:</p>
+    </p><center><img width="100%" src="images/token_decomposition2.png"></center>
+    <p><i><b>Heatmaps produced by the image token decomposition.</b> We visualize (a) what areas in the image directly contribute to the similarity score between the image representation and a text representation and (b) what areas make an image representation more similar to one text representation rather than another.</i></p>
+    <div class="gap-10"></div>
+    <p>Binarizing these heatmaps (by applying a fixed threshold) produces foreground/background segments. We compare this simple segmentation method to zero-shot segmentations produced by other explainability methods in the same manner. Our method outperforms them by a large margin on the ImageNet-Segmentation dataset (Guillaumin et al., 2014):</p>
+    </p><center><img width="70%" src="images/seg_quant.png"></center>
+    <p><i><b>Segmentation performance on ImageNet-Segmentation.</b> The image tokens decomposition results in significantly more accurate zero-shot segmentation than previous methods.</i></p>
+    <hr>
+    <b><span style="font-size:25px">Acknowledgements</span></b>
+    <div class="gap-20"></div>
+    <p>We would like to thank Jean-Stanislas Denain for the insightful discussions and comments. We thank Jixahai Feng, Fred Zhang, and Erik Jones for helpful feedback on the manuscript. YG is supported by the Google Fellowship. AE is supported in part by DoD, including DARPA's MCS and ONR MURI, as well as funding from SAP. JS is supported by the NSF Awards No. 1804794 & 2031899.</p>
+  </body>
+  </div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+
+</html>
