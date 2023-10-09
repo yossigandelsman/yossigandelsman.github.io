@@ -167,9 +167,9 @@
     <p>We show that the CLIP-ViT image representation can be decomposed into direct contributions of individual layers of the image encoder ViT architecture. We <a href="https://www.neelnanda.io/mechanistic-interpretability/glossary">mean-ablate</a> these contributions and find that the last few attention layers have most of the direct effects on this representation.</p>
     <p>The contributions from these last $L$ attention layers can be decomposed further as a sum across $N$ individual image patches and $H$ attention heads:</p>
     <center>
-    <blockquote>$CLIP(I) = \sum_{l=1}^L{\sum_{h=1}^H{\sum_{i=1}^{N}{{c_{i,l,h}}}}}$</blockquote>
+    <blockquote>$CLIP_{image}(I) = \sum_{l=1}^L{\sum_{h=1}^H{\sum_{i=1}^{N}{{c_{i,l,h}}}}}$</blockquote>
   </center>
-    <p>Each summand $c_{i,l,h}$ lives in a joint vision-language space, so by computing the inner product between the summand and a CLIP text representation we can get its contribution towards a given text representation.</p>
+    <p>Each summand $c_{i,l,h}$ lives in a joint vision-language space, so by computing the inner product $\langle c_{i,l,h}, CLIP_{text}(t)\rangle$ between the summand and a CLIP text representation $CLIP_{text}(t)$ we can get its contribution towards this text.</p>
     <hr>
     <b><span style="font-size:25px">Decomposition into attention heads</span></b>
     <div class="gap-10"></div>
