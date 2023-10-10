@@ -1,0 +1,8 @@
+@misc{gandelsman2023interpreting,
+      title={Interpreting CLIP's Image Representation via Text-Based Decomposition}, 
+      author={Yossi Gandelsman and Alexei A. Efros and Jacob Steinhardt},
+      year={2023},
+      eprint={2310.05916},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
