@@ -175,18 +175,18 @@
     <hr>
     <b><span style="font-size:25px">Decomposition into attention heads</span></b>
     <div class="gap-10"></div>
-    <p>The image represntation can be decomposed into contributions of individual attention heads $c_{head}^{(l,h)} = \sum_{i=1}^{N}{{c_{i,l,h}}$. We present <i>TextSpan</i>, an algorithm for labeling the latent directions of each component $c_{head}^{(l,h)}$ with text descriptions. Our labeling reveals that some heads exhibit specific semantic roles:</p>
+    <p>The image representation can be decomposed into contributions of individual attention heads $c_{head}^{(l,h)} = \sum_{i=1}^{N}{{c_{i,l,h}}$. We present <i>TextSpan</i>, an algorithm for labeling the latent directions of each component $c_{head}^{(l,h)}$ with text descriptions. Our labeling reveals that some heads exhibit specific semantic roles:</p>
     <img width="100%" src="images/heads.png">
     <div class="gap-10"></div>
     <b><span style="font-size:22px">Emergent similarity metrics in CLIP</span></b>
     <div class="gap-10"></div>
-    <p>Since some heads specialize to image properties, we can use their intermediate representations to obtain a property-specific similarity metric. We use these metrics for retrieving the most similar images to a given input, according to these heads:</p>
+    <p>Since some heads specialize in image properties, we can use their intermediate representations to obtain a property-specific similarity metric. We use these metrics for retrieving the most similar images to a given input, according to these heads:</p>
       <img width="100%" src="images/nn6.png">
       <p><i><b>Top-8 nearest neighbors per head and image.</b> We retrieve the most similar images to an input image by computing the similarity of the direct contributions of individual heads. As some heads capture specific aspects of the image (e.g. colors/objects), retrieval according to this metric results in images that are most similar regarding these aspects</i></p>
     <div class="gap-10"></div>
     <b><span style="font-size:22px">Reducing known spurious cues</span></b>
     <div class="gap-10"></div>
-    We can use our knowledge of head-specific roles to manually remove spurious correlations. For instance, if location is being used as a spurious feature, we can ablate heads that specialize in geolocation to reduce reliance on the incorrect feature.
+    We can use our knowledge of head-specific roles to manually remove spurious correlations. For instance, if the location is being used as a spurious feature, we can ablate heads specializing in geolocation to reduce reliance on the incorrect feature.
     <p>We validate this idea on the Waterbirds dataset (Sagawa et al., 2019), and show a significant increase in worst-group accuracy:</p><center><img width="35%" src="images/spurious_cues.png"></center>
     <p><i><b>Worst-group accuracy on Waterbirds.</b> We reduce spurious cues by ablating property-specific heads (geo-location and location). As a baseline, we ablated 10 random heads and reported the top accuracy out of 5 trials.</i></p> 
     <div class="gap-10"></div>
