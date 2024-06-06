@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" class="fontawesome-i2svg-active fontawesome-i2svg-complete">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript"
+  src="https://www.maths.nottingham.ac.uk/plp/pmadw/LaTeXMathML.js">
+  </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Interpreting the Second-Order Effects of Neurons in CLIP</title>
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6">
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+      <script defer="" src="css/fontawesome.all.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      body {
+        font-size:20px;
+        margin:60px auto;
+        width:auto;
+        max-width:900px;
+      }
+
+      hr {
+        border:0;
+        height:1.0px;
+        background-image:linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+      }
+
+      .gap-30 {
+      width:100%;
+      height:30px;
+      }
+
+      .gap-20 {
+      width:100%;
+      height:20px;
+      }
+
+      .gap-10 {
+      width:100%;
+      height:10px;
+      }
+
+      .gap-5 {
+      width:100%;
+      height:5px;
+      }
+      .paper {
+        max-width: 700px;
+      }
+      @media (max-width: 910px) {
+        .paper {
+          max-width: 500px;
+        }
+      }
+      @media (max-width: 610px) {
+        .paper {
+          max-width: 300px;
+        }
+      }
+    </style>
+  </head>
+
+  <div class="container">
+  <body>
+
+    <center><span style="font-size:40px">
+      Interpreting the Second-Order Effects<br>of Neurons in CLIP
+    </span></center>
+    <div class="gap-20"></div>
+
+    <!---------------------  authors --------------------->
+    <span style="font-size:20px">
+    <div class="row">
+      <div class="col-md-4">
+        <center><a href="https://yossi.gandelsman.com"><span style="font-size:21px">Yossi Gandelsman</span></a>
+      </div>
+      <div class="col-md-4">
+        <center><a href="https://people.eecs.berkeley.edu/~efros/"><span style="font-size:21px">Alexei A. Efros</span></a>
+      </div>
+      <div class="col-md-4">
+        <center><a href="https://jsteinhardt.stat.berkeley.edu/"><span style="font-size:21px">Jacob Steinhardt</span></a>
+      </div>
+    </div>
+  </span>
+   
+    <!--------------------- affiliations --------------------->
+    <div class="gap-5"></div>
+    
+    <div class="row">
+      <div class="col-md-4">
+        <center><span style="font-size:18px">
+        </span></center>
+      </div>
+      <div class="col-md-4">
+        <center><span style="font-size:18px">UC Berkeley
+        </span></center>
+      </div>
+      <div class="col-md-4">
+        <center><span style="font-size:18px">
+        </span></center>
+      </div>
+      
+    </div>
+    <div class="gap-10"></div>
+    <hr>
+
+    <!--------------------- links --------------------->
+    <div class="gap-10"></div>
+
+    <center>
+    <span style="font-size:23px">
+      [<a href="" class="external-link button is-normal is-rounded is-dark">paper</a>]
+      &nbsp;
+      [<a href="bibtex.txt">bibtex</a>]
+      &nbsp; 
+      [<a href="https://github.com/yossigandelsman/second_order_lens">code</a>]
+    </span>
+    <br>
+    <div class="gap-20"></div>
+
+    </center>
+<img id="teaser" width="100%" src="images/second_order.png">
+<p></p>
+<p><span style="font-size:18px"><i><b>Second order effects of CLIP's neurons.</b> Top: We analyze the second-order effects of neurons in CLIP-ViT (flow in <span style="color: #ed145d">pink</span>). Bottom-left: Each second-order effect of a neuron can be decomposed to a sparse set of word directions in the joint text-image space. Bottom-right: co-appearing words in these sets can be used for mass-generation of semantic adversarial images.
+  </i></span></p>
+<hr>
+    <!--------------------- abstract --------------------->
+    <div class="gap-20"></div>
+    <center><b><span style="font-size:25px">Abstract</span></b><br></center>
+    <div class="gap-10"></div>
+    <p>
+   We interpret the function of individual neurons in CLIP by automatically describing them using text. Analyzing the direct effects (i.e. the flow from a neuron through the residual stream to the output) or the indirect effects (overall contribution) fails to capture the neurons' function in CLIP. Therefore, we present the <i>"second-order lens"</i>, analyzing the effect flowing from a neuron through the later attention heads, directly to the output. We find that these effects are highly selective: for each neuron, the effect is significant for <2% of the images. Moreover, each effect can be approximated by a single direction in the text-image space of CLIP. We describe neurons by decomposing these directions into sparse sets of text representations. The sets reveal polysemantic behavior - each neuron corresponds to multiple, often unrelated, concepts (e.g. ships and cars). Exploiting this neuron polysemy, we mass-produce "semantic" adversarial examples by generating images with concepts spuriously correlated to the incorrect class. Additionally, we use the second-order effects for zero-shot segmentation and attribute discovery in images. Our results indicate that a scalable understanding of neurons can be used for model deception and for introducing new model capabilities.
+    </p>
+    <hr>
+    <!--------------------- content --------------------->
+    <!-- <div class="gap-20"></div> -->
+     <b><span style="font-size:25px">Second-order effects of neurons</span></b>
+    <div class="gap-10"></div>
+    <p>Our goal is to interpret individual neurons in CLIP-ViT - post-GELU single channel activations in the MLPs. These neurons have different types of contributions to the output — the <span style="color: #0caee6">first-order (direct) effects</span>,
+<span style="color: #ed145d">second-order effects</span>, and (higher-order) indirect effects:</p>
+    <center>
+    <img width="50%" src="images/second_order_explained.png">
+    </center>
+    <p>As shown in <a href="https://yossigandelsman.github.io/clip_decomposition/index.html">our previous work</a>, the <span style="color: #0caee6">first-order (direct) effect</span> of neurons - the flow from a neuron, through the residual stream directly to the output - is negligible.</p>
+    <p>Moreover, analyzing the indirect effects of neurons by ablating each one of them individually and measuring the change in output, does not reveal much: Most information is stored redundantly with many neurons encoding the same concept.</p>
+    <p>To address this, we introduce a <i>"second-order lens"</i> for investigating the <span style="color: #ed145d">second-order effect</span> of a neuron - its total contribution to the output, flowing via all the consecutive attention heads.</p>
+    <hr>
+    <b><span style="font-size:25px">Characterizing the second-order effects</span></b>
+    <div class="gap-10"></div>
+    <p>Analyzing the empirical behavior of the second-order effects, computed for images in <a href="https://www.image-net.org/">ImageNet</a>, we find that:
+    <ul>
+      <li>Only neurons from the late MLP layers have a significant second-order effect.</li>
+      <li>Second-order effects are highly selective: Each individual neuron has a significant effect for less than 2% of the images.</li>
+      <li>For each neuron $n$, its effect can be approximated by one linear direction in the output space $r_n \in {R}^d$. The second order effect of $n$ for an image $I$ is $\alpha_n(I)r_n + c_{bias}$, where $\alpha(I) \in R$ is an image-dependant coefficient, and $c_{bias}$ is a per-neuron constant bias term.</li>
+    </ul>
+    We use these observations to decompose the neurons directions $r_n$ into text-representations.
+    </p>
+    <hr>
+    <b><span style="font-size:25px">Sparse decomposition of neurons</span></b>
+    <div class="gap-10"></div>
+    <p>Since $r_n$ lies in a shared image-text space, we can decompose it to a sparse set of text directions. We use a sparse coding method (<a href="https://ieeexplore.ieee.org/document/342465">Orthogonal Matching Pursuit</a>) to mine for a small set of texts for each neuron, out of a large pool of descriptions. We apply the method for two types of initial text pools - the most common words in English, and LLM-generated image descriptions:</p>
+    <center>
+    <img width="90%" src="images/decomposition.png">
+    </center>
+    <center><i><span style="font-size:18px"><b>Examples of sparse decompositions.</b> For each neuron, we present the top-4 texts corresponding to the sparse decompositions and the signs of the coefficients in the decomposition for the two initial pools.</span></i>
+    </center><p></p>
+    <p>These text representations show that neurons are polysemantic - each neuron corresponds to <i>multiple</i> semantic concepts (e.g. writing both toward "yacht" and a type of a car - "cabriolet").</p><p>To verify that the neuron decompositions are meaningful, we show that these concepts correctly track which inputs activate a given neuron:</p>
+    <center>
+    <img width="90%" src="images/top_neurons.png">
+    </center>
+    <center>
+    <i><span style="font-size:18px"><b>Images with largest second-order effect norm per neuron.</b> We present the top images from 10% of ImageNet test set for the neurons above.</span></i>
+    </center>
+
+    <hr>
+    <b><span style="font-size:25px">Automatic generation of adversarial examples</span></b>
+    <div class="gap-10"></div>
+    <p>The sparse decomposition of $r_n$'s allows us to find overlapping concepts that neurons are writing to.
+We use these spurious cues to generate "semantic" adversarial images. 
+<p><a href="teaser">Our pipeline</a>, uses the sparse docompositions to mine for spurious concepts (words) that correlate with the incorrect class in CLIP (e.g. "elephant", that correlates with "dog"). The next step in the pipeline combines these words into image descriptions that include the correct class name ("cat"), and generates adversarial images by providing these descriptions to a text-to-image model.</p>
+<p>We apply this technique to automatically produce adversarial images for a variety of classification tasks:</p>
+    <img width="100%" src="images/adversarial_big.png">
+    <center>
+    <i><span style="font-size:18px"><b>Adversarial images generated by our method.</b> For each binary classification task, we present the generated images and the input text to the text-to-image model (detected spurious concepts are bold).</span></i>
+    </center>
+    <p></p>
+    <p>Our quantitative analysis in the paper shows that incorporating spuriously overlapping concepts in an image deceives CLIP with a significant success rate (see paper for more details).</p>
+    <hr>
+    <b><span style="font-size:25px">Concept discovery in images</span></b>
+    <div class="gap-10"></div>
+    We automatically discover the image concepts by aggregating words that correspond to the neurons that are activated on the image. We start from the set of <i>activated</i> neurons (for which $\alpha(I)$ is above the 98th percentile of norms computed across ImageNet images) and merge the scores of the words in the decomposition of these neurons. 
+    <p>The top words extracted from these neurons relate semantically to the objects in the image and their locations:</p>
+    <center>
+    <img width="60%" src="images/image_explain.png">
+</center>
+    <hr>
+    <b><span style="font-size:25px">Zero-shot segmentation</span></b>
+    <div class="gap-10"></div>
+    <p>Each neuron corresponds to an attribution map, by looking at its spatial activations on each image patch. Ensembling the neurons that contribute towards a concept results in an aggregated attribution map:</p>
+    <center>
+    <img width="70%" src="images/segmentation.png">
+    </center>
+    <p>Binarizing these attribution maps yields a strong zero-shot image segmenter that outperforms recent work (see paper for more details).</p>
+<p></p>
+  <hr>
+    <b><span style="font-size:23px">Acknowledgments</span></b>
+    <div class="gap-10"></div>
+    <p>We would like to thank Alexander Pan for helpful feedback on the manuscript. YG is supported by the Google Fellowship. AE is supported in part by DoD, including DARPA's MCS and ONR MURI, as well as funding from SAP. JS is supported by the NSF Awards No. 1804794 & 2031899.</p>
+  </body>
+  </div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+
+</html>
