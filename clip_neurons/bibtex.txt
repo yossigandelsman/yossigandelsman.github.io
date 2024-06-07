@@ -1,4 +1,4 @@
-@misc{gandelsman2024interpreting,
+@misc{gandelsman2024neurons,
       title={Interpreting the Second-Order Effects of Neurons in CLIP}, 
       author={Yossi Gandelsman and Alexei A. Efros and Jacob Steinhardt},
       year={2024},
