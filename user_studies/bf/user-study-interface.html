@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
             text-align: center;
@@ -17,33 +17,51 @@
             margin: 10px 0;
             font-weight: bold;
         }
+        #timer.warning {
+            color: #ff6600;
+        }
+        #timer.danger {
+            color: #ff0000;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
         #image-container {
             width: 100%;
-            min-height: 400px;
+            height: 400px;
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 20px 0;
             border: 1px solid #ccc;
+            position: relative;
         }
-        .single-image {
+        .image-display {
             max-width: 100%;
-            max-height: 400px;
+            max-height: 100%;
+            display: block;
+            margin: 0 auto;
         }
-        .image-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px;
-            max-height: 70vh;
-            overflow-y: auto;
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            z-index: 10;
         }
-        .image-grid img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            border: 1px solid #eee;
+        #prev-button {
+            left: 10px;
+        }
+        #next-button {
+            right: 10px;
         }
         .button-container {
             margin: 20px 0;
@@ -86,25 +104,32 @@
         }
         #progress {
             margin: 10px 0;
+            font-size: 16px;
         }
         #instruction {
             font-size: 18px;
             margin: 15px 0;
             font-weight: bold;
         }
+        .navigation-help {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
     <h1>Image Classification User Study</h1>
-    
+
     <div id="introduction">
         <p>In this study, you will learn to classify images into two categories - 0 and 1.</p>
         <p>This study will show you several sets of images:</p>
         <ol>
-            <li>100 reference images with their categories (1 minute)</li>
-            <li>Images flipping from Category 0 to Category 1 (1 minute)</li>
-            <li>Images flipping from Category 1 to Category 0 (1 minute)</li>
-            <li>50 test images one by one (you'll classify each as Category 0 or 1)</li>
+            <li>Reference images (1 minute) - Use buttons or arrow keys to navigate</li>
+            <li>Images flipping from Category 0 to Category 1  (1 minute) - Use buttons or arrow keys to navigate</li>
+            <li>Images flipping from Category 1 to Category (1 minute) - Use buttons or arrow keys to navigate</li>
+            <li>Test phase (5 minutes) - Classify 50 images as Category 0 or 1</li>
         </ol>
         <p>When you're ready to begin, click the Start button.</p>
         <button id="start-button">Start Study</button>
@@ -114,7 +139,15 @@
         <div id="instruction">Viewing reference images (null set)</div>
         <div id="timer">01:00</div>
         <div id="progress"></div>
-        <div id="image-container"></div>
+        
+        <div class="navigation-help" id="navigation-help">
+            Use the left/right arrow buttons or your keyboard's ← → arrow keys to navigate through images
+        </div>
+        
+        <div id="image-container">
+            <button id="prev-button" class="nav-button">←</button>
+            <button id="next-button" class="nav-button">→</button>
+        </div>
         
         <div id="test-controls" class="hidden">
             <p>Is this image from Category 0 or Category 1?</p>
@@ -136,9 +169,10 @@
         const config = {
             nullImages: 100,
             target0Images: 50,
-            target1Images: 46,
+            target1Images: 50,
             testImages: 50,
-            phaseTime: 60 // Time for each phase in seconds
+            phaseTime: 60, // Time for each initial phase in seconds
+            testTime: 300 // Time for test phase in seconds (5 minutes)
         };
 
         // Study state
@@ -157,20 +191,36 @@
         const timerElement = document.getElementById('timer');
         const instructionElement = document.getElementById('instruction');
         const progressElement = document.getElementById('progress');
+        const navigationHelpElement = document.getElementById('navigation-help');
         const testControlsElement = document.getElementById('test-controls');
         const resultsElement = document.getElementById('results-container');
         const responsesElement = document.getElementById('responses');
         const startButton = document.getElementById('start-button');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
         const copyButton = document.getElementById('copy-button');
         const categoryButtons = document.querySelectorAll('.category-button');
 
         // Event listeners
         startButton.addEventListener('click', startStudy);
+        prevButton.addEventListener('click', showPreviousImage);
+        nextButton.addEventListener('click', showNextImage);
         copyButton.addEventListener('click', copyResults);
         categoryButtons.forEach(button => {
             button.addEventListener('click', () => {
                 recordResponse(button.dataset.category);
             });
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (state.phase !== 'test' && ['null', 'target0', 'target1'].includes(state.phase)) {
+                if (e.key === 'ArrowLeft') {
+                    showPreviousImage();
+                } else if (e.key === 'ArrowRight') {
+                    showNextImage();
+                }
+            }
         });
 
         // Start the study
@@ -184,7 +234,7 @@
         function startPhase(phase) {
             state.phase = phase;
             state.currentIndex = 0;
-            state.timer = config.phaseTime;
+            state.timer = phase === 'test' ? config.testTime : config.phaseTime;
             
             // Update UI for the phase
             updateInstructionForPhase();
@@ -196,70 +246,113 @@
             }
             
             // Start the timer for timed phases
-            if (phase !== 'test') {
-                state.interval = setInterval(() => {
-                    state.timer--;
-                    updateTimer();
-                    
-                    if (state.timer <= 0) {
-                        clearInterval(state.interval);
+            state.interval = setInterval(() => {
+                state.timer--;
+                updateTimer();
+                
+                // Change timer color as time gets low
+                if (state.phase === 'test') {
+                    if (state.timer <= 60) { // Last minute
+                        timerElement.className = 'danger';
+                    } else if (state.timer <= 120) { // Last 2 minutes
+                        timerElement.className = 'warning';
+                    }
+                }
+                
+                if (state.timer <= 0) {
+                    clearInterval(state.interval);
+                    if (state.phase === 'test') {
+                        endStudy();
+                    } else {
                         nextPhase();
                     }
-                }, 1000);
-            }
+                }
+            }, 1000);
             
-            // Show images based on phase
-            if (phase === 'test') {
-                showTestImage();
-                progressElement.textContent = `Test Image 1 of ${config.testImages}`;
-                timerElement.textContent = '';
+            if (phase !== 'test') {
+                // Show navigation for browsable phases
+                prevButton.style.display = 'block';
+                nextButton.style.display = 'block';
+                navigationHelpElement.style.display = 'block';
+                testControlsElement.classList.add('hidden');
+                
+                updateCurrentImage();
             } else {
-                // For non-test phases, load all images at once
-                loadAllImagesForPhase(phase);
-                progressElement.textContent = '';
+                // Hide navigation for test phase
+                prevButton.style.display = 'none';
+                nextButton.style.display = 'none';
+                navigationHelpElement.style.display = 'none';
+                testControlsElement.classList.remove('hidden');
+                
+                showTestImage();
             }
         }
 
-        // Load all images for a given phase
-        function loadAllImagesForPhase(phase) {
-            // Clear the container
+        // Show the previous image in the current phase
+        function showPreviousImage() {
+            if (state.phase === 'test') return;
+            
+            const maxIndex = getMaxIndexForPhase(state.phase);
+            state.currentIndex = (state.currentIndex > 0) ? state.currentIndex - 1 : maxIndex;
+            updateCurrentImage();
+        }
+
+        // Show the next image in the current phase
+        function showNextImage() {
+            if (state.phase === 'test') return;
+            
+            const maxIndex = getMaxIndexForPhase(state.phase);
+            state.currentIndex = (state.currentIndex < maxIndex) ? state.currentIndex + 1 : 0;
+            updateCurrentImage();
+        }
+
+        // Update the currently displayed image based on phase and index
+        function updateCurrentImage() {
+            // Clear the container except for navigation buttons
+            const navButtons = Array.from(imageContainer.querySelectorAll('.nav-button'));
             imageContainer.innerHTML = '';
+            navButtons.forEach(button => imageContainer.appendChild(button));
             
-            // Create a grid container for the images
-            const grid = document.createElement('div');
-            grid.className = 'image-grid';
-            imageContainer.appendChild(grid);
+            // Determine the path based on the current phase
+            let imagePath;
+            let maxIndex = getMaxIndexForPhase(state.phase);
             
-            // Determine path and count based on phase
-            let basePath = '';
-            let count = 0;
-            let extension = '';
-            
-            switch(phase) {
+            switch(state.phase) {
                 case 'null':
-                    basePath = 'null/';
-                    count = config.nullImages;
-                    extension = '.png';
+                    imagePath = `null/${state.currentIndex}.png`;
                     break;
                 case 'target0':
-                    basePath = 'target_0/ti_ddpmef/';
-                    count = config.target0Images;
-                    extension = '.gif';
+                    imagePath = `target_0/ti_ddpmef/${state.currentIndex}.gif`;
                     break;
                 case 'target1':
-                    basePath = 'target_1/ti_ddpmef/';
-                    count = config.target1Images;
-                    extension = '.gif';
+                    imagePath = `target_1/ti_ddpmef/${state.currentIndex}.gif`;
                     break;
             }
             
-            // Create and add all images to the grid
-            for (let i = 0; i < count; i++) {
-                const img = document.createElement('img');
-                img.src = `${basePath}${i}${extension}`;
-                img.alt = `Image ${i + 1}`;
-                img.loading = 'lazy'; // Lazy load images for better performance
-                grid.appendChild(img);
+            // Create and display the image
+            const img = document.createElement('img');
+            img.src = imagePath;
+            img.alt = `Image ${state.currentIndex + 1}`;
+            img.className = 'image-display';
+            imageContainer.appendChild(img);
+            
+            // Update progress
+            progressElement.textContent = `Image ${state.currentIndex + 1} of ${maxIndex + 1}`;
+        }
+
+        // Get the maximum index for the current phase
+        function getMaxIndexForPhase(phase) {
+            switch(phase) {
+                case 'null':
+                    return config.nullImages - 1;
+                case 'target0':
+                    return config.target0Images - 1;
+                case 'target1':
+                    return config.target1Images - 1;
+                case 'test':
+                    return config.testImages - 1;
+                default:
+                    return 0;
             }
         }
 
@@ -267,7 +360,7 @@
         function updateInstructionForPhase() {
             switch(state.phase) {
                 case 'null':
-                    instructionElement.textContent = 'Viewing all reference images (null set)';
+                    instructionElement.textContent = 'Viewing reference images (null set)';
                     break;
                 case 'target0':
                     instructionElement.textContent = 'Viewing images flipping from Category 0 to Category 1';
@@ -276,7 +369,7 @@
                     instructionElement.textContent = 'Viewing images flipping from Category 1 to Category 0';
                     break;
                 case 'test':
-                    instructionElement.textContent = 'Test phase: Classify each image';
+                    instructionElement.textContent = 'Test phase: Classify each image (5 minutes total)';
                     break;
             }
         }
@@ -288,17 +381,18 @@
             timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        // Show the next test image
+        // Show the current test image
         function showTestImage() {
-            // Clear container and show test controls
+            // Clear container except for navigation buttons
+            const navButtons = Array.from(imageContainer.querySelectorAll('.nav-button'));
             imageContainer.innerHTML = '';
-            testControlsElement.classList.remove('hidden');
+            navButtons.forEach(button => imageContainer.appendChild(button));
             
             // Create and display test image
             const img = document.createElement('img');
             img.src = `test/${state.currentIndex}.png`;
             img.alt = `Test Image ${state.currentIndex + 1}`;
-            img.className = 'single-image';
+            img.className = 'image-display';
             imageContainer.appendChild(img);
             
             // Update progress
@@ -317,6 +411,10 @@
             if (state.currentIndex < config.testImages) {
                 showTestImage();
             } else {
+                // Clear the timer if all images are classified before time runs out
+                if (state.interval) {
+                    clearInterval(state.interval);
+                }
                 endStudy();
             }
         }
@@ -349,7 +447,18 @@
             // Also create a simple array format for easy copying
             const arrayFormat = `[${state.responses.map(r => r.category).join(', ')}]`;
             
-            responsesElement.innerHTML = `<p><strong>Detailed Responses:</strong></p>
+            // Calculate and display stats
+            const completedImages = state.responses.length;
+            const completionPercentage = ((completedImages / config.testImages) * 100).toFixed(1);
+            
+            let statsHtml = '';
+            if (completedImages < config.testImages) {
+                statsHtml = `<p><strong>Completion: </strong>${completedImages} of ${config.testImages} images classified (${completionPercentage}%)</p>`;
+            }
+            
+            responsesElement.innerHTML = `
+                ${statsHtml}
+                <p><strong>Detailed Responses:</strong></p>
                 <pre>${formattedResponses}</pre>
                 <p><strong>Array Format:</strong></p>
                 <pre>${arrayFormat}</pre>`;
