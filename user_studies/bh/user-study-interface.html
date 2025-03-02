@@ -127,8 +127,7 @@
         <p>This study will show you several sets of images:</p>
         <ol>
             <li>Reference images (1 minute) - Use buttons or arrow keys to navigate</li>
-            <li>Images flipping from Category 0 to Category 1  (1 minute) - Use buttons or arrow keys to navigate</li>
-            <li>Images flipping from Category 1 to Category 0 (1 minute) - Use buttons or arrow keys to navigate</li>
+            <li>Images flipping from Category 0 to Category 1  (2 minute) - Use buttons or arrow keys to navigate</li>
             <li>Test phase (5 minutes) - Classify 50 images as Category 0 or 1</li>
         </ol>
         <p>When you're ready to begin, click the Start button.</p>
@@ -168,8 +167,7 @@
         // Study configuration
         const config = {
             nullImages: 100,
-            target0Images: 50,
-            target1Images: 47,
+            target0Images: 49,
             testImages: 50,
             phaseTime: 60, // Time for each initial phase in seconds
             testTime: 300 // Time for test phase in seconds (5 minutes)
@@ -214,7 +212,7 @@
 
         // Add keyboard navigation
         document.addEventListener('keydown', (e) => {
-            if (state.phase !== 'test' && ['null', 'target0', 'target1'].includes(state.phase)) {
+            if (state.phase !== 'test' && ['null', 'target0'].includes(state.phase)) {
                 if (e.key === 'ArrowLeft') {
                     showPreviousImage();
                 } else if (e.key === 'ArrowRight') {
@@ -235,7 +233,9 @@
             state.phase = phase;
             state.currentIndex = 0;
             state.timer = phase === 'test' ? config.testTime : config.phaseTime;
-            
+            if (phase == "target0") {
+                state.timer = config.phaseTime * 2
+            }
             // Update UI for the phase
             updateInstructionForPhase();
             updateTimer();
@@ -324,9 +324,6 @@
                 case 'target0':
                     imagePath = `target_0/ti_ddpmef/${state.currentIndex}.gif`;
                     break;
-                case 'target1':
-                    imagePath = `target_1/ti_ddpmef/${state.currentIndex}.gif`;
-                    break;
             }
             
             // Create and display the image
@@ -347,8 +344,6 @@
                     return config.nullImages - 1;
                 case 'target0':
                     return config.target0Images - 1;
-                case 'target1':
-                    return config.target1Images - 1;
                 case 'test':
                     return config.testImages - 1;
                 default:
@@ -364,9 +359,6 @@
                     break;
                 case 'target0':
                     instructionElement.textContent = 'Viewing images flipping from Category 0 to Category 1';
-                    break;
-                case 'target1':
-                    instructionElement.textContent = 'Viewing images flipping from Category 1 to Category 0';
                     break;
                 case 'test':
                     instructionElement.textContent = 'Test phase: Classify each image (5 minutes total)';
@@ -426,9 +418,6 @@
                     startPhase('target0');
                     break;
                 case 'target0':
-                    startPhase('target1');
-                    break;
-                case 'target1':
                     startPhase('test');
                     break;
             }
