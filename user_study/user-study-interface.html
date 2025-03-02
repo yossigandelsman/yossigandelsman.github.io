@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Classification User Study</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        #timer {
+            font-size: 24px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        #image-container {
+            width: 100%;
+            min-height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+        }
+        .single-image {
+            max-width: 100%;
+            max-height: 400px;
+        }
+        .image-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .image-grid img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            border: 1px solid #eee;
+        }
+        .button-container {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        #start-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 24px;
+            font-size: 18px;
+        }
+        .category-button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        #responses {
+            text-align: left;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        #copy-button {
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .hidden {
+            display: none;
+        }
+        #progress {
+            margin: 10px 0;
+        }
+        #instruction {
+            font-size: 18px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Classification User Study</h1>
+    
+    <div id="introduction">
+        <p>In this study, you will learn to classify images into two categories - 0 and 1.</p>
+        <p>This study will show you several sets of images:</p>
+        <ol>
+            <li>100 reference images with their categories (1 minute)</li>
+            <li>Images flipping from Category 0 to Category 1 (1 minute)</li>
+            <li>Images flipping from Category 1 to Category 0 (1 minute)</li>
+            <li>50 test images one by one (you'll classify each as Category 0 or 1)</li>
+        </ol>
+        <p>When you're ready to begin, click the Start button.</p>
+        <button id="start-button">Start Study</button>
+    </div>
+
+    <div id="study-container" class="hidden">
+        <div id="instruction">Viewing reference images (null set)</div>
+        <div id="timer">01:00</div>
+        <div id="progress"></div>
+        <div id="image-container"></div>
+        
+        <div id="test-controls" class="hidden">
+            <p>Is this image from Category 0 or Category 1?</p>
+            <div class="button-container">
+                <button class="category-button" data-category="0">Category 0</button>
+                <button class="category-button" data-category="1">Category 1</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="results-container" class="hidden">
+        <h2>Your Results</h2>
+        <div id="responses"></div>
+        <button id="copy-button">Copy Results</button>
+    </div>
+
+    <script>
+        // Study configuration
+        const config = {
+            nullImages: 100,
+            target0Images: 50,
+            target1Images: 46,
+            testImages: 50,
+            phaseTime: 60 // Time for each phase in seconds
+        };
+
+        // Study state
+        const state = {
+            phase: 'null',
+            currentIndex: 0,
+            responses: [],
+            timer: config.phaseTime,
+            interval: null
+        };
+
+        // DOM elements
+        const introElement = document.getElementById('introduction');
+        const studyElement = document.getElementById('study-container');
+        const imageContainer = document.getElementById('image-container');
+        const timerElement = document.getElementById('timer');
+        const instructionElement = document.getElementById('instruction');
+        const progressElement = document.getElementById('progress');
+        const testControlsElement = document.getElementById('test-controls');
+        const resultsElement = document.getElementById('results-container');
+        const responsesElement = document.getElementById('responses');
+        const startButton = document.getElementById('start-button');
+        const copyButton = document.getElementById('copy-button');
+        const categoryButtons = document.querySelectorAll('.category-button');
+
+        // Event listeners
+        startButton.addEventListener('click', startStudy);
+        copyButton.addEventListener('click', copyResults);
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                recordResponse(button.dataset.category);
+            });
+        });
+
+        // Start the study
+        function startStudy() {
+            introElement.classList.add('hidden');
+            studyElement.classList.remove('hidden');
+            startPhase('null');
+        }
+
+        // Start a phase of the study
+        function startPhase(phase) {
+            state.phase = phase;
+            state.currentIndex = 0;
+            state.timer = config.phaseTime;
+            
+            // Update UI for the phase
+            updateInstructionForPhase();
+            updateTimer();
+            
+            // Clear any existing interval
+            if (state.interval) {
+                clearInterval(state.interval);
+            }
+            
+            // Start the timer for timed phases
+            if (phase !== 'test') {
+                state.interval = setInterval(() => {
+                    state.timer--;
+                    updateTimer();
+                    
+                    if (state.timer <= 0) {
+                        clearInterval(state.interval);
+                        nextPhase();
+                    }
+                }, 1000);
+            }
+            
+            // Show images based on phase
+            if (phase === 'test') {
+                showTestImage();
+                progressElement.textContent = `Test Image 1 of ${config.testImages}`;
+                timerElement.textContent = '';
+            } else {
+                // For non-test phases, load all images at once
+                loadAllImagesForPhase(phase);
+                progressElement.textContent = '';
+            }
+        }
+
+        // Load all images for a given phase
+        function loadAllImagesForPhase(phase) {
+            // Clear the container
+            imageContainer.innerHTML = '';
+            
+            // Create a grid container for the images
+            const grid = document.createElement('div');
+            grid.className = 'image-grid';
+            imageContainer.appendChild(grid);
+            
+            // Determine path and count based on phase
+            let basePath = '';
+            let count = 0;
+            let extension = '';
+            
+            switch(phase) {
+                case 'null':
+                    basePath = 'null/';
+                    count = config.nullImages;
+                    extension = '.png';
+                    break;
+                case 'target0':
+                    basePath = 'target_0/ti_ddpmef/';
+                    count = config.target0Images;
+                    extension = '.gif';
+                    break;
+                case 'target1':
+                    basePath = 'target_1/ti_ddpmef/';
+                    count = config.target1Images;
+                    extension = '.gif';
+                    break;
+            }
+            
+            // Create and add all images to the grid
+            for (let i = 0; i < count; i++) {
+                const img = document.createElement('img');
+                img.src = `${basePath}${i}${extension}`;
+                img.alt = `Image ${i + 1}`;
+                img.loading = 'lazy'; // Lazy load images for better performance
+                grid.appendChild(img);
+            }
+        }
+
+        // Update the instruction text based on current phase
+        function updateInstructionForPhase() {
+            switch(state.phase) {
+                case 'null':
+                    instructionElement.textContent = 'Viewing all reference images (null set)';
+                    break;
+                case 'target0':
+                    instructionElement.textContent = 'Viewing images flipping from Category 0 to Category 1';
+                    break;
+                case 'target1':
+                    instructionElement.textContent = 'Viewing images flipping from Category 1 to Category 0';
+                    break;
+                case 'test':
+                    instructionElement.textContent = 'Test phase: Classify each image';
+                    break;
+            }
+        }
+
+        // Update the timer display
+        function updateTimer() {
+            const minutes = Math.floor(state.timer / 60);
+            const seconds = state.timer % 60;
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Show the next test image
+        function showTestImage() {
+            // Clear container and show test controls
+            imageContainer.innerHTML = '';
+            testControlsElement.classList.remove('hidden');
+            
+            // Create and display test image
+            const img = document.createElement('img');
+            img.src = `test/${state.currentIndex}.png`;
+            img.alt = `Test Image ${state.currentIndex + 1}`;
+            img.className = 'single-image';
+            imageContainer.appendChild(img);
+            
+            // Update progress
+            progressElement.textContent = `Test Image ${state.currentIndex + 1} of ${config.testImages}`;
+        }
+
+        // Record a response for the current test image
+        function recordResponse(category) {
+            state.responses.push({
+                imageIndex: state.currentIndex,
+                category: category
+            });
+            
+            // Move to next test image or end study
+            state.currentIndex++;
+            if (state.currentIndex < config.testImages) {
+                showTestImage();
+            } else {
+                endStudy();
+            }
+        }
+
+        // Move to the next phase of the study
+        function nextPhase() {
+            switch(state.phase) {
+                case 'null':
+                    startPhase('target0');
+                    break;
+                case 'target0':
+                    startPhase('target1');
+                    break;
+                case 'target1':
+                    startPhase('test');
+                    break;
+            }
+        }
+
+        // End the study and show results
+        function endStudy() {
+            // Hide study elements
+            studyElement.classList.add('hidden');
+            
+            // Format and display responses
+            const formattedResponses = state.responses.map(r => 
+                `Image ${r.imageIndex}: Category ${r.category}`
+            ).join('\n');
+            
+            // Also create a simple array format for easy copying
+            const arrayFormat = `[${state.responses.map(r => r.category).join(', ')}]`;
+            
+            responsesElement.innerHTML = `<p><strong>Detailed Responses:</strong></p>
+                <pre>${formattedResponses}</pre>
+                <p><strong>Array Format:</strong></p>
+                <pre>${arrayFormat}</pre>`;
+            
+            // Show results
+            resultsElement.classList.remove('hidden');
+        }
+
+        // Copy results to clipboard
+        function copyResults() {
+            const arrayFormat = `[${state.responses.map(r => r.category).join(', ')}]`;
+            navigator.clipboard.writeText(arrayFormat)
+                .then(() => {
+                    alert('Results copied to clipboard!');
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy. Please select and copy the text manually.');
+                });
+        }
+    </script>
+</body>
+</html>
