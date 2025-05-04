@@ -55,7 +55,7 @@
         </button>
     </div>
     <div class="intro px-3 py-3 pt-md-5 pb-md-4 mx-auto">
-        <h1 class="display-6 text-center">Yossi Gandelsman</h1>
+        <h1 class="display-6 text-center name">Yossi Gandelsman</h1>
         <div class="d-flex flex-wrap bd-highlight mb-3 my-3 justify-content-center">
             <div class="p-2 order-1 bd-highlight"><img class="img-thumbnail" src="images/me.png" alt="" width="240px">
             </div><div class="intro-text order-2 p-2 my-1 bd-highlight text-left">
@@ -68,7 +68,7 @@
                         Mathematics and Computer Science of the Weizmann Institute of Science</a>, advised by
                     <a target="_blank" href="http://www.weizmann.ac.il/math/irani/">Prof. Michal Irani</a>, and a B.Sc. at the <a href="https://www.openu.ac.il/en/pages/default.aspx">Open University of Israel</a>.</p>
                 <br>
-                <p class="text-center"><a target="_blank" href="mailto:yossi@gandelsman.com"><i
+                <p class="text-center social-icons"><a target="_blank" href="mailto:yossi@gandelsman.com"><i
                             class="far fa-envelope"></i></a>
                     <!--<a target="_blank" target="_blank" href="data/CV.pdf"><i class="ai ai-cv"></i></a>  --><a
                         target="_blank" href="https://scholar.google.co.il/citations?user=71L4yYMAAAAJ&hl=en"><i
@@ -82,6 +82,66 @@
         </div>
     </div>
 
+    <script>
+        // Handle floating header on mobile
+        function handleFloatingHeader() {
+            const header = document.querySelector('.intro h1');
+            const socialIcons = document.querySelector('.social-icons');
+            const introSection = document.querySelector('.intro');
+            
+            // Only proceed if we're on mobile
+            if (window.innerWidth <= 768) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) {
+                            // Create floating header if it doesn't exist
+                            if (!document.querySelector('.floating-header')) {
+                                const floatingHeader = document.createElement('div');
+                                floatingHeader.className = 'floating-header';
+                                floatingHeader.innerHTML = `
+                                    <h1>Yossi Gandelsman</h1>
+                                    <div class="social-icons">
+                                        <a target="_blank" href="mailto:yossi@gandelsman.com"><i class="far fa-envelope"></i></a>
+                                        <a target="_blank" href="https://scholar.google.co.il/citations?user=71L4yYMAAAAJ&hl=en"><i class="ai ai-google-scholar"></i></a>
+                                        <a target="_blank" href="https://www.linkedin.com/in/yossi-gandelsman-b3645a194/"><i class="fab fa-linkedin"></i></a>
+                                        <a target="_blank" href="https://github.com/yossigandelsman/"><i class="fab fa-github"></i></a>
+                                        <a target="_blank" href="https://twitter.com/YGandelsman"><i class="fab fa-twitter"></i></a>
+                                    </div>
+                                `;
+                                document.body.appendChild(floatingHeader);
+                                document.body.classList.add('floating-header-active');
+                            }
+                        } else {
+                            // Remove floating header if it exists
+                            const floatingHeader = document.querySelector('.floating-header');
+                            if (floatingHeader) {
+                                floatingHeader.remove();
+                                document.body.classList.remove('floating-header-active');
+                            }
+                        }
+                    });
+                }, { threshold: 0 });
+                
+                observer.observe(introSection);
+            } else {
+                // Always remove floating header on desktop
+                const floatingHeader = document.querySelector('.floating-header');
+                if (floatingHeader) {
+                    floatingHeader.remove();
+                    document.body.classList.remove('floating-header-active');
+                }
+            }
+        }
+
+        // Initialize theme and floating header
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            handleFloatingHeader();
+        });
+
+        // Update floating header on resize
+        window.addEventListener('resize', handleFloatingHeader);
+    </script>
 
     <div class="container">
         <a name="publications"></a>
