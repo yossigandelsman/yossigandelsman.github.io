@@ -1,6 +1,91 @@
 html {
   font-size: 14px;
 }
+
+/* Dark mode styles */
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-color: #ffffff;
+  --card-bg: #2d2d2d;
+  --link-color: #64b5f6;
+  --link-hover-color: #90caf9;
+  --border-color: #404040;
+}
+
+[data-theme="light"] {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --card-bg: #ffffff;
+  --link-color: #00398e;
+  --link-hover-color: #0d6efd;
+  --border-color: #dee2e6;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme toggle button styles */
+.theme-toggle-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 10px;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  outline: none;
+}
+
+.theme-toggle:hover {
+  transform: rotate(30deg);
+}
+
+.theme-toggle:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Card styles for dark mode */
+.card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.card-body {
+  color: var(--text-color);
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 1rem;
+}
+
+/* Link styles for dark mode */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:focus,
+a:hover {
+  color: var(--link-hover-color);
+  text-decoration: none;
+}
+
+/* Achievement text color for dark mode */
+.achievement {
+  color: #a970ff;
+}
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -12,6 +97,18 @@ h4 {
 @media (max-width: 768px) {
   body {
     padding-top: 2rem;
+  }
+  .card-body {
+    flex-wrap: wrap;
+  }
+  
+  .teaser {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .paper {
+    width: 100%;
   }
 }
 @media (min-width: 768px) {
@@ -29,6 +126,7 @@ h1 {
 
 .card-deck .card {
   min-width: 220px;
+  margin-bottom: 1rem;
 }
 
 .intro {
@@ -42,26 +140,6 @@ max-width: 500px;
 .image-text {
   color: gray;
   font-size: 12px;
-}
-
-a {
-  color: #00398e;
-  text-decoration: none;
-}
-
-a:focus,
-a:hover {
-  color: #0d6efd;
-  text-decoration: none;
-}
-
-.achievement {
-	color: #8100ea;
-  font-size: 1rem;
-}
-
-.paper {
-	max-width: 640px;
 }
 
 i.far {
@@ -81,6 +159,20 @@ i.fab {
 }
 @media (min-width: 768px) {
   .teaser {
-    max-width: 266px;
+    flex: 0 0 auto;
+    width: 266px;
+    padding: 0.5rem;
   }
+}
+
+.teaser {
+  flex: 0 0 auto;
+  width: 266px;
+  padding: 0.5rem;
+}
+
+.paper {
+  flex: 1;
+  padding: 0.5rem;
+  min-width: 0; /* Prevents flex item from overflowing */
 }

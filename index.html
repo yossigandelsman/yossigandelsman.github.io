@@ -23,9 +23,37 @@
     <link href="all.min.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <title>Yossi Gandelsman</title>
+    <script>
+        // Check for saved theme preference
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+
+        // Initialize theme
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        }
+
+        // Initialize theme on page load
+        document.addEventListener('DOMContentLoaded', initTheme);
+    </script>
 </head>
 
 <body>
+    <div class="theme-toggle-container">
+        <button class="theme-toggle" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
     <div class="intro px-3 py-3 pt-md-5 pb-md-4 mx-auto">
         <h1 class="display-6 text-center">Yossi Gandelsman</h1>
         <div class="d-flex flex-wrap bd-highlight mb-3 my-3 justify-content-center">
@@ -69,7 +97,7 @@
                         </a>
                     </div>
                     <div class="p-2 order-2 bd-highlight paper">
-                        <h4 class="my-0 mb-2 font-weight-normal">Interpreting the repeated token phenomenon in Large Language Models</h4>
+                        <h4 class="my-0 mb-2 font-weight-normal">Interpreting the Repeated Token Phenomenon in Large Language Models</h4>
                         <ul class="list-unstyled mb-0">
                             <li>Itay Yona, Jamie Hayes, Ilia Shumailov, Federico Barbero and <b>Yossi Gandelsman</b></li>
                             <li><i>ICML 2025</i></li>
@@ -290,8 +318,7 @@
                     <div class="p-2 order-2 bd-highlight paper">
                         <h4 class="my-0 mb-2 font-weight-normal">Deep ViT Features as Dense Visual Descriptors</h4>
                         <ul class="list-unstyled mb-0">
-                            <li>Shir Amir,
-                                 <b>Yossi Gandelsman</b>, Shai Bagon and Tali Dekel
+                            <li>Shir Amir,<b>Yossi Gandelsman</b>, Shai Bagon and Tali Dekel
                             </li>
                             <li><i>ECCVW 2022 <span class="achievement">["WIMF" Best Spotlight Presentation]</span></i></li>
                             <li class="mt-2"><a target="_blank" href="https://arxiv.org/abs/2112.05814">paper</a> | <a
@@ -313,8 +340,7 @@
                     <div class="p-2 order-2 bd-highlight paper">
                         <h4 class="my-0 mb-2 font-weight-normal">Deep Saliency Prior for Reducing Visual Distraction</h4>
                         <ul class="list-unstyled mb-0">
-                            <li>Kfir Aberman*,
-                                 Junfeng He*, <b>Yossi Gandelsman</b>, Inbar Mosseri, David E. Jacobs, Kai Kohlhoff, Yael Pritch and Michael Rubinstein
+                            <li>Kfir Aberman*, Junfeng He*, <b>Yossi Gandelsman</b>, Inbar Mosseri, David E. Jacobs, Kai Kohlhoff, Yael Pritch and Michael Rubinstein
                             </li>
                             <li><i>CVPR 2022</i></li>
                             <li class="mt-2"><a target="_blank" href="https://arxiv.org/abs/2109.01980">paper</a> | <a
