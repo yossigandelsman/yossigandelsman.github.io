@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Escape Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        
+        #gameCanvas {
+            display: block;
+            background-color: white;
+        }
+        
+        #ui {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        #gameOver {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            z-index: 1001;
+        }
+        
+        #gameOver h2 {
+            margin: 0 0 20px 0;
+            font-size: 36px;
+        }
+        
+        #gameOver button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        #gameOver button:hover {
+            background-color: #45a049;
+        }
+        
+        #startScreen {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 1002;
+        }
+        
+        #startScreen h1 {
+            margin: 0 0 20px 0;
+            font-size: 48px;
+        }
+        
+        #startScreen p {
+            margin: 0 0 30px 0;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        
+        #startScreen button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        #startScreen button:hover {
+            background-color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    
+    <div id="ui">
+        <div>Score: <span id="score">0</span></div>
+        <div>High Score: <span id="highScore">0</span></div>
+    </div>
+    
+    <div id="gameOver">
+        <h2>Game Over!</h2>
+        <p>Final Score: <span id="finalScore">0</span></p>
+        <button onclick="restartGame()">Play Again</button>
+    </div>
+    
+    <div id="startScreen">
+        <h1>Square Escape</h1>
+        <p>Move your mouse to control the blue square.<br>
+        Avoid the red rectangles and collect green boxes for points!</p>
+        <button onclick="startGame()">Start Game</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Game variables
+        let gameRunning = false;
+        let score = 0;
+        let highScore = localStorage.getItem('highScore') || 0;
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        // Player (blue square)
+        const playerSize = 20;
+        
+        // Arrays for game objects
+        let redRectangles = [];
+        let greenBoxes = [];
+        
+        // Game settings
+        let redRectangleSpeed = 3;
+        const greenBoxLifetime = 5000; // 5 seconds
+        let lastGreenBoxTime = 0;
+        let lastRedRectangleTime = 0;
+        let gameStartTime = 0;
+        let baseSpawnInterval = 500; // Start with 1 second interval
+        let lastSpeedIncreaseTime = 0;
+        
+        // Update high score display
+        document.getElementById('highScore').textContent = highScore;
+        
+        // Mouse tracking
+        canvas.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // Red Rectangle class
+        class RedRectangle {
+            constructor() {
+                this.width = (Math.random() * 60 + 20) * 2; // 40-160px wide (200% size)
+                this.height = (Math.random() * 40 + 10) * 2; // 20-100px tall (200% size)
+                
+                // Randomly choose entry side
+                const side = Math.floor(Math.random() * 4);
+                
+                switch(side) {
+                    case 0: // Top
+                        this.x = Math.random() * canvas.width;
+                        this.y = -this.height;
+                        this.vx = 0;
+                        this.vy = redRectangleSpeed;
+                        break;
+                    case 1: // Right
+                        this.x = canvas.width;
+                        this.y = Math.random() * canvas.height;
+                        this.vx = -redRectangleSpeed;
+                        this.vy = 0;
+                        break;
+                    case 2: // Bottom
+                        this.x = Math.random() * canvas.width;
+                        this.y = canvas.height;
+                        this.vx = 0;
+                        this.vy = -redRectangleSpeed;
+                        break;
+                    case 3: // Left
+                        this.x = -this.width;
+                        this.y = Math.random() * canvas.height;
+                        this.vx = redRectangleSpeed;
+                        this.vy = 0;
+                        break;
+                }
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+            }
+            
+            draw() {
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+            
+            isOffScreen() {
+                return this.x < -this.width || this.x > canvas.width || 
+                       this.y < -this.height || this.y > canvas.height;
+            }
+            
+            collidesWith(playerX, playerY, playerSize) {
+                return playerX < this.x + this.width &&
+                       playerX + playerSize > this.x &&
+                       playerY < this.y + this.height &&
+                       playerY + playerSize > this.y;
+            }
+        }
+        
+        // Green Box class
+        class GreenBox {
+            constructor() {
+                this.size = 15;
+                this.x = Math.random() * (canvas.width - this.size);
+                this.y = Math.random() * (canvas.height - this.size);
+                this.createdAt = Date.now();
+            }
+            
+            draw() {
+                ctx.fillStyle = '#00ff00';
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+            }
+            
+            collidesWith(playerX, playerY, playerSize) {
+                return playerX < this.x + this.size &&
+                       playerX + playerSize > this.x &&
+                       playerY < this.y + this.size &&
+                       playerY + playerSize > this.y;
+            }
+            
+            isExpired() {
+                return Date.now() - this.createdAt > greenBoxLifetime;
+            }
+        }
+        
+        // Game functions
+        function spawnRedRectangle() {
+            // Calculate current spawn interval based on time elapsed
+            const timeElapsed = Date.now() - gameStartTime;
+            const currentSpawnInterval = Math.max(200, baseSpawnInterval - (timeElapsed / 10000)); // Decrease by 100ms every 10 seconds, minimum 200ms
+            
+            if (Date.now() - lastRedRectangleTime > currentSpawnInterval) {
+                redRectangles.push(new RedRectangle());
+                lastRedRectangleTime = Date.now();
+            }
+        }
+        
+        function spawnGreenBox() {
+            // Only spawn a new green box if there are no existing green boxes
+            if (greenBoxes.length === 0 && Date.now() - lastGreenBoxTime > 2000) { // Spawn every 2 seconds
+                greenBoxes.push(new GreenBox());
+                lastGreenBoxTime = Date.now();
+            }
+        }
+        
+        function increaseSpeed() {
+            // Increase speed every 15 seconds
+            const timeElapsed = Date.now() - gameStartTime;
+            if (timeElapsed - lastSpeedIncreaseTime >= 15000) { // 15 seconds
+                redRectangleSpeed *= 1.1;
+                lastSpeedIncreaseTime = timeElapsed;
+            }
+        }
+        
+        function updateGame() {
+            // Increase speed every 15 seconds
+            increaseSpeed();
+            
+            // Spawn new objects
+            spawnRedRectangle();
+            spawnGreenBox();
+            
+            // Update red rectangles
+            redRectangles = redRectangles.filter(rect => {
+                rect.update();
+                return !rect.isOffScreen();
+            });
+            
+            // Update green boxes
+            greenBoxes = greenBoxes.filter(box => {
+                return !box.isExpired();
+            });
+            
+            // Check collisions
+            const playerX = mouseX - playerSize / 2;
+            const playerY = mouseY - playerSize / 2;
+            
+            // Check red rectangle collisions
+            for (let rect of redRectangles) {
+                if (rect.collidesWith(playerX, playerY, playerSize)) {
+                    gameOver();
+                    return;
+                }
+            }
+            
+            // Check green box collisions
+            for (let i = greenBoxes.length - 1; i >= 0; i--) {
+                if (greenBoxes[i].collidesWith(playerX, playerY, playerSize)) {
+                    score += 10;
+                    document.getElementById('score').textContent = score;
+                    greenBoxes.splice(i, 1);
+                }
+            }
+        }
+        
+        function drawGame() {
+            // Clear canvas
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw player (blue square)
+            ctx.fillStyle = '#0066ff';
+            ctx.fillRect(mouseX - playerSize / 2, mouseY - playerSize / 2, playerSize, playerSize);
+            
+            // Draw red rectangles
+            for (let rect of redRectangles) {
+                rect.draw();
+            }
+            
+            // Draw green boxes
+            for (let box of greenBoxes) {
+                box.draw();
+            }
+        }
+        
+        function gameLoop() {
+            if (gameRunning) {
+                updateGame();
+                drawGame();
+                requestAnimationFrame(gameLoop);
+            }
+        }
+        
+        function gameOver() {
+            gameRunning = false;
+            
+            // Show cursor after game ends
+            document.body.style.cursor = 'default';
+            
+            // Update high score
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('highScore', highScore);
+                document.getElementById('highScore').textContent = highScore;
+            }
+            
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('gameOver').style.display = 'block';
+        }
+        
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('gameOver').style.display = 'none';
+            
+            // Reset game state
+            score = 0;
+            redRectangles = [];
+            greenBoxes = [];
+            lastGreenBoxTime = Date.now();
+            lastRedRectangleTime = Date.now();
+            gameStartTime = Date.now();
+            lastSpeedIncreaseTime = 0;
+            redRectangleSpeed = 3; // Reset speed to initial value
+            
+            document.getElementById('score').textContent = score;
+            
+            // Hide cursor during game
+            document.body.style.cursor = 'none';
+            
+            gameRunning = true;
+            gameLoop();
+        }
+        
+        function restartGame() {
+            startGame();
+        }
+        
+        // Initialize mouse position to center
+        mouseX = canvas.width / 2;
+        mouseY = canvas.height / 2;
+    </script>
+</body>
+</html> 
