@@ -133,6 +133,33 @@
             }
         }
 
+        // Secret game keyboard shortcut
+        let typedKeys = '';
+        let lastKeyTime = 0;
+        
+        document.addEventListener('keydown', (e) => {
+            const currentTime = Date.now();
+            
+            // Reset typed keys if more than 2 seconds have passed
+            if (currentTime - lastKeyTime > 2000) {
+                typedKeys = '';
+            }
+            
+            // Add the pressed key to our buffer
+            typedKeys += e.key.toLowerCase();
+            lastKeyTime = currentTime;
+            
+            // Check if we've typed "game" or "play"
+            if (typedKeys.includes('game') || typedKeys.includes('play')) {
+                window.location.href = 'game.html';
+            }
+            
+            // Keep only the last 10 characters to prevent memory issues
+            if (typedKeys.length > 10) {
+                typedKeys = typedKeys.slice(-10);
+            }
+        });
+
         // Initialize theme and floating header
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
